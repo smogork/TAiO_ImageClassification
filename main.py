@@ -4,12 +4,9 @@
 LOL? Docstring zgodnie z zyczeniem
 """
 
-"""
-Główna funkcja tego przykładu
-"""
-
 
 def main():
+    """Główna funkcja tego przykładu"""
     print("Hello World")
 
 

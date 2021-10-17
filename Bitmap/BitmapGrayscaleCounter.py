@@ -10,12 +10,12 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
     Następnie przetwarza taka tablice do BitmapGrayscale, gdzie kolor czarny to wartosc maksymalna znaleziona w tablicy, a biały to 0.
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int):
         self.__width = width
         super(BitmapGrayscaleCounter, self).__init__(self, width, height)
         super(BitmapGrayscaleCounter, self).White = sys.maxsize * 2 + 1 #Duża liczba w stylu MaxInt
 
-    def increment_cell(self, x, y) -> int:
+    def increment_cell(self, x: int, y: int) -> int:
         """
         Metoda inkrementuje komórkę o wspólrzędnych podanych w argumentach
 

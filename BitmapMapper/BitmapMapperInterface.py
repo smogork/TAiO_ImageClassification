@@ -1,23 +1,28 @@
 #! /usr/bin/env python3
 
 from Bitmap.BitmapGrayscale import BitmapGrayscale
+import abc
+import typing
 
-class BitmapMapperInterface:
+class BitmapMapperInterface(metaclass=abc.ABCMeta):
     """
     Interfejs reprezentujący wszystkei sposoby przetworzenia ciągu liczb na obrazek w skali szarości.
     Obrazek będzie kwadratowy o ustalonej szerokości.
     """
 
-    def convert_series(self, series) -> BitmapGrayscale:
+    @abc.abstractmethod
+    def convert_series(self, series: typing.List[float]) -> BitmapGrayscale:
         """
         Metoda powinna przetworzyć pewien ciąg liczbowy na obrazek w skali szarości.
 
+        :raise RuntimeError: W przypadku, gdy nie zostala wykonana wczesniej metoda set_bitmap_size
         :param series: Ciąg danych liczbowych
         :return: Zwraca BitmapGrayscale przechowującą obrazek wygenerowany w pewien sposób z ciągu wejściowego.
         """
         pass
 
-    def set_bitmap_size(self, bitmap_size) -> None:
+    @abc.abstractmethod
+    def set_bitmap_size(self, bitmap_size: int) -> None:
         """
         Metoda powinna byc uzyta do konfiguracji rozmiaru bitmapy wynikowej.
         Wynikowa bitmapa powinna byc rozmiaru podanego w tej metodzie.

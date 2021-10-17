@@ -44,7 +44,7 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
         for y in range(super(BitmapGrayscaleCounter, self).get_width()):
             for x in range(super(BitmapGrayscaleCounter, self).get_height()):
                 #Dodatkowo zmianiemy max_value na 0, ponieważ czarny reprezentujemy jako 0 w bitmapie
-                result.set_cell_value()x, y, (max_value - super(BitmapGrayscaleCounter, self).get_cell_value(x, y) // max_value)
+                result.set_cell_value(x, y, (max_value - super(BitmapGrayscaleCounter), self.get_cell_value(x, y)) // max_value)
 
         return result
 

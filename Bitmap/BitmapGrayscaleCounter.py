@@ -54,7 +54,11 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
                 result.set_cell_value(
                     x,
                     y,
-                    (max_value - super(BitmapGrayscaleCounter, self).get_cell_value(x, y)) // max_value,
+                    (
+                        max_value
+                        - super(BitmapGrayscaleCounter, self).get_cell_value(x, y)
+                    )
+                    // max_value,
                 )
 
         return result

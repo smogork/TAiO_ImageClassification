@@ -8,8 +8,6 @@ class BitmapGrayscale:
     Klasa opisuje bitmape o okreslonych wymiarach w skali szarości 8 bitowej
     """
 
-
-
     def __init__(self, width: int, height: int):
         self.__width = width
         self.__height = height

@@ -4,6 +4,7 @@ from Bitmap.BitmapGrayscale import BitmapGrayscale
 import abc
 import typing
 
+
 class BitmapMapperInterface(metaclass=abc.ABCMeta):
     """
     Interfejs reprezentujący wszystkei sposoby przetworzenia ciągu liczb na obrazek w skali szarości.

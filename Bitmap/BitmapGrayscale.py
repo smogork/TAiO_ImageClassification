@@ -27,11 +27,11 @@ class BitmapGrayscale:
 
     def set_cell_value(self, x: int, y: int, value: int) -> None:
         if value < self.Black or value > self.White:
-            raise ValueError(f'Value should be in range [{self.Black},{self.White}]')
+            raise ValueError(f"Value should be in range [{self.Black},{self.White}]")
 
         self.__bitmap[y][x] = value
 
     def to_png(self, path: str) -> None:
-        with open(path, 'wb') as f:
+        with open(path, "wb") as f:
             writer = png.Writer(self.__width, self.__height, greyscale=True)
             writer.write(f, self.__bitmap)

@@ -28,21 +28,22 @@ class DifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
         """
 
         if self.__size is None:
-            raise RuntimeError("Call set_bitmap_size to set bitmap size before this method.")
+            raise RuntimeError(
+                "Call set_bitmap_size to set bitmap size before this method."
+            )
 
         counters = BitmapGrayscaleCounter(self.__size, self.__size)
 
-        #Wyliczenie rożnic i wspólrzędnych
+        # Wyliczenie rożnic i wspólrzędnych
         x = np.array(series)
         dx = x[1:] - x[:-1]
         coordinates = np.array((x[1:], dx)).T
 
-        #Policzenie wystapień
+        # Policzenie wystapień
         for (x, y) in coordinates:
             counters.increment_cell(round(x), round(y))
 
         return counters.convert_to_BitmapGrayscale()
-
 
     def set_bitmap_size(self, bitmap_size: int) -> None:
         """

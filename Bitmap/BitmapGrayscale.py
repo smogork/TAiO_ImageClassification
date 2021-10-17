@@ -16,6 +16,12 @@ class BitmapGrayscale:
         self.__height = height
         self.__bitmap = [[0 for i in range(self.__width)] for j in range(self.__height)]
 
+    def getHeight(self) -> int:
+        return self.__height
+
+    def getWidth(self) -> int:
+        return self.__width
+
     def getCellValue(self, x, y) -> int:
         return self.__bitmap[y][x]
 

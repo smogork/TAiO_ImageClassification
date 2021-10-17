@@ -16,22 +16,22 @@ class BitmapGrayscale:
         self.__height = height
         self.__bitmap = [[0 for i in range(self.__width)] for j in range(self.__height)]
 
-    def getHeight(self) -> int:
+    def get_height(self) -> int:
         return self.__height
 
-    def getWidth(self) -> int:
+    def get_width(self) -> int:
         return self.__width
 
-    def getCellValue(self, x, y) -> int:
+    def get_cell_value(self, x, y) -> int:
         return self.__bitmap[y][x]
 
-    def setCellValue(self, x, y, value) -> None:
+    def set_cell_value(self, x, y, value) -> None:
         if value < self.Black or value > self.White:
             raise ValueError(f'Value should be in range [{self.Black},{self.White}]')
 
         self.__bitmap[y][x] = value
 
-    def toPNG(self, path) -> None:
+    def to_png(self, path) -> None:
         with open(path, 'wb') as f:
             writer = png.Writer(self.__width, self.__height, greyscale=True)
             writer.write(f, self.__bitmap)

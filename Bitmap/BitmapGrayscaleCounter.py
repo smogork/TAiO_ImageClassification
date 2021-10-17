@@ -23,8 +23,8 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
         :param y: Wspólrzędna Y (numer wiersza)
         :return: Zwraca wartość komórki po inkrementacji
         """
-        super(BitmapGrayscaleCounter, self).setCellValue(x, y, super(BitmapGrayscaleCounter, self).getCellValue(x, y) + 1)
-        return super(BitmapGrayscaleCounter, self).getCellValue(x, y)
+        super(BitmapGrayscaleCounter, self).set_cell_value(x, y, super(BitmapGrayscaleCounter, self).get_cell_value(x, y) + 1)
+        return super(BitmapGrayscaleCounter, self).get_cell_value(x, y)
 
     def convert_to_BitmapGrayscale(self) -> BitmapGrayscale:
         """
@@ -35,16 +35,16 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
 
         :return: Zwraca obiekt typu BitmapGrayscale reprezentujący przetworzoną bitmapę.
         """
-        result = BitmapGrayscale(super(BitmapGrayscaleCounter, self).getWidth(), super(BitmapGrayscaleCounter, self).getHeight())
+        result = BitmapGrayscale(super(BitmapGrayscaleCounter, self).get_width(), super(BitmapGrayscaleCounter, self).get_height())
 
         #Znalezienie wartosci maksymalnej
         max_value = self.__get_max_value_in_array()
 
         #Przeskalowanie liniowo każdego elementu od zero do max_value
-        for y in range(super(BitmapGrayscaleCounter, self).getWidth()):
-            for x in range(super(BitmapGrayscaleCounter, self).getHeight()):
+        for y in range(super(BitmapGrayscaleCounter, self).get_width()):
+            for x in range(super(BitmapGrayscaleCounter, self).get_height()):
                 #Dodatkowo zmianiemy max_value na 0, ponieważ czarny reprezentujemy jako 0 w bitmapie
-                result.setCellValue(x, y, (max_value - super(BitmapGrayscaleCounter, self).getCellValue(x, y) // max_value)
+                result.set_cell_value()x, y, (max_value - super(BitmapGrayscaleCounter, self).get_cell_value(x, y) // max_value)
 
         return result
 
@@ -56,9 +56,9 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
         """
         max_value = 0
 
-        for y in range(super(BitmapGrayscaleCounter, self).getWidth()):
-            for x in range(super(BitmapGrayscaleCounter, self).getHeight()):
-                max_value = max(max_value, super(BitmapGrayscaleCounter, self).getCellValue(x, y))
+        for y in range(super(BitmapGrayscaleCounter, self).get_width()):
+            for x in range(super(BitmapGrayscaleCounter, self).get_height()):
+                max_value = max(max_value, super(BitmapGrayscaleCounter, self).get_cell_value(x, y))
 
         return max_value
 

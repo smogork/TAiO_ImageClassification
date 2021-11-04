@@ -8,7 +8,7 @@ from Bitmap.BitmapGrayscale import BitmapGrayscale
 from Bitmap.BitmapGrayscaleCounter import BitmapGrayscaleCounter
 
 
-class DifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
+class ModuloDifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
     """
     Klasa przetwarza ciag na bitmape za pomocą współrzednych wyznaczonych z pierwszej różnicy i danych wejściowych.
     Niech ciąg ma n elementów. Wtedy otrzymamy n-1 par (x_i, dx_i), które traktujemy jak wspólrzędne w bitmapie.

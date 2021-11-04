@@ -8,7 +8,7 @@ from Bitmap.BitmapGrayscale import BitmapGrayscale
 from Bitmap.BitmapGrayscaleCounter import BitmapGrayscaleCounter
 
 
-class DifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
+class MinMaxDifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
     """
     Klasa przetwarza ciag na bitmape za pomocą współrzednych wyznaczonych z pierwszej różnicy i danych wejściowych.
     Niech ciąg ma n elementów. Wtedy otrzymamy n-1 par (x_i, dx_i), które traktujemy jak wspólrzędne w bitmapie.
@@ -36,8 +36,19 @@ class DifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
 
         # Wyliczenie rożnic i wspólrzędnych
         x = np.array(series)
+        max_x = np.amax(x)
+        min_x = np.amin(x)
         dx = x[1:] - x[:-1]
-        coordinates = np.array((x[1:], dx)).T
+        max_dx = np.amax(dx)
+        min_dx = np.amin(dx)
+
+        # Zmapowanie wspolrzednych do przedzialu [min, max]
+        coordinates = np.array(
+            (
+                (x[1:] - min_x) / (max_x - min_x) * self.__size,
+                (dx - min_dx) / (max_dx - min_dx) * self.__size,
+            )
+        ).T
 
         # Policzenie wystapień
         for (x, y) in coordinates:

@@ -13,7 +13,7 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
     def __init__(self, width: int, height: int):
         self.__width = width
         super(BitmapGrayscaleCounter, self).__init__(self, width, height)
-        super(BitmapGrayscaleCounter, self).White = (
+        super(BitmapGrayscaleCounter, self).white = (
             sys.maxsize * 2 + 1
         )  # Duża liczba w stylu MaxInt
 

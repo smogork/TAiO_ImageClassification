@@ -8,13 +8,12 @@ class BitmapGrayscale:
     Klasa opisuje bitmape o okreslonych wymiarach w skali szarości 8 bitowej
     """
 
-    White = 255
-    Black = 0
-
     def __init__(self, width: int, height: int):
         self.__width = width
         self.__height = height
         self.__bitmap = [[0 for i in range(self.__width)] for j in range(self.__height)]
+        self.white = 255
+        self.black = 0
 
     def get_height(self) -> int:
         return self.__height
@@ -26,8 +25,8 @@ class BitmapGrayscale:
         return self.__bitmap[y][x]
 
     def set_cell_value(self, x: int, y: int, value: int) -> None:
-        if value < self.Black or value > self.White:
-            raise ValueError(f"Value should be in range [{self.Black},{self.White}]")
+        if value < self.black or value > self.white:
+            raise ValueError(f"Value should be in range [{self.black},{self.white}]")
 
         self.__bitmap[y][x] = value
 

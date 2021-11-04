@@ -1,9 +1,13 @@
 #! /usr/bin/env python3
 
+"""
+MOduł zawiera klasę definiującą zbiór właściwości.
+"""
+
 import typing
 
-from Bitmap import BitmapGrayscale
-from Feature.Feature import Feature
+from bitmap import bitmap_grayscale
+from feature.feature import Feature
 
 
 class FeatureExtractor:
@@ -11,7 +15,7 @@ class FeatureExtractor:
     Klasa zajmująca się wyznaczenie wszystkich właściwości z obrazka w skali szarości.
     """
     def __init__(self):
-        self.__features = typing.List[Feature]
+        self.__features = []
 
     def add_feature(self, feature: Feature) -> None:
         """
@@ -20,7 +24,7 @@ class FeatureExtractor:
         """
         self.__features.append(feature)
 
-    def calculate_features(self, bitmap: BitmapGrayscale) -> typing.List[float]:
+    def calculate_features(self, bitmap: bitmap_grayscale) -> typing.List[float]:
         """
         Metoda wyznacza wszystkie właściwości dodane wczesniej z obrazka podanego w argumencie.
         :param bitmap: Obraz w skali szarości, z którego będzie wyznaczony zbiór właściwości.

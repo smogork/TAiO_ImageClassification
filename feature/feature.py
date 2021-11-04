@@ -1,8 +1,13 @@
 #! /usr/bin/env python3
 
+"""
+Moduł zaiwera abstrakcyjną klasę reprezentująca funkcje wylczjącą właściwość
+przekazanego obrazu
+"""
+
 import abc
-import typing
-from Bitmap import BitmapGrayscale
+
+from bitmap import bitmap_grayscale
 
 
 class Feature(metaclass=abc.ABCMeta):
@@ -20,14 +25,14 @@ class Feature(metaclass=abc.ABCMeta):
         :return:
         Wartość reprezentująca wynikową właściwość
         """
-        pass
 
     @abc.abstractmethod
-    def prepare(self, bitmap: BitmapGrayscale) -> None:
+    def prepare(self, bitmap: bitmap_grayscale) -> None:
         """
-        Metoda przygotowuje wejściową bitmpae w skali szarości do wyznaczenia implementowanej właściwości.
-        Uwaga: Należy wykonac ta metodę przed calculate. Wpw metoda calculate powinna rzucać wyjątek RuntimeError.
+        Metoda przygotowuje wejściową bitmpae w skali szarości do wyznaczenia implementowanej
+        właściwości.
+        Uwaga: Należy wykonac ta metodę przed calculate. Wpw metoda calculate
+        powinna rzucać wyjątek RuntimeError.
 
         :param bitmap: Bitmapa, z której nastapi wyznaczenie właściwości w metodzie calculate
         """
-        pass

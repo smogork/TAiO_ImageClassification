@@ -27,7 +27,7 @@ class BitmapMapperInterface(metaclass=abc.ABCMeta):
         """
         Metoda powinna byc uzyta do konfiguracji rozmiaru bitmapy wynikowej.
         Wynikowa bitmapa powinna byc rozmiaru podanego w tej metodzie.
-        Gdy nie zostanie ona wykonana przed ConvertSeries, powinien zostac wyrzucony wyjatek RuntimeError.
+        Gdy nie zostanie ona wykonana przed convert_series, powinien zostac wyrzucony wyjatek RuntimeError.
 
         :param bitmap_size: Szerokośc i wysokość bitmapy (jedna liczba)
         """

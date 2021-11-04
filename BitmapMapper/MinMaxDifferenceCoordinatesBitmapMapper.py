@@ -42,8 +42,13 @@ class MinMaxDifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
         max_dx = np.amax(dx)
         min_dx = np.amin(dx)
 
-        #Zmapowanie wspolrzednych do przedzialu [min, max]
-        coordinates = np.array(((x[1:] - min_x)/(max_x - min_x) * self.__size , (dx - min_dx) / (max_dx - min_dx) * self.__size)).T
+        # Zmapowanie wspolrzednych do przedzialu [min, max]
+        coordinates = np.array(
+            (
+                (x[1:] - min_x) / (max_x - min_x) * self.__size,
+                (dx - min_dx) / (max_dx - min_dx) * self.__size,
+            )
+        ).T
 
         # Policzenie wystapień
         for (x, y) in coordinates:

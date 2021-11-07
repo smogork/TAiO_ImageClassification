@@ -5,16 +5,20 @@ from bitmap import bitmap_grayscale
 import statistics
 
 
-class MinFeature(feature.Feature):
+class MaxFeature(feature.Feature):
+    """
+    Klasa oblicza podaje największy numer komórki, która nie jest biała
+    """
 
     def __init__(self):
         self.__tab = []
 
     def calculate(self) -> float:
+        maximum = 0
         i = 0
         for cell in self.__tab:
             if cell > 0:
-                return i
+                maximum = i
             i += 1
         return i
 

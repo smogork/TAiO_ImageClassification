@@ -5,19 +5,16 @@ from bitmap import bitmap_grayscale
 import statistics
 
 
-class MaxFeature(feature.Feature):
+class MedianFeature(feature.Feature):
+    """
+    Klasa oblicza medianę z kolorów komórek
+    """
 
     def __init__(self):
         self.__tab = []
 
     def calculate(self) -> float:
-        maximum = 0
-        i = 0
-        for cell in self.__tab:
-            if cell > 0:
-                maximum = i
-            i += 1
-        return i
+        return statistics.median(self.__tab)
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         for i in range(bitmap.get_height()):

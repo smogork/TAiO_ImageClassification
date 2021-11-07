@@ -5,13 +5,16 @@ from bitmap import bitmap_grayscale
 import statistics
 
 
-class MedianFeature(feature.Feature):
+class MeanFeature(feature.Feature):
+    """
+    Klasa oblicza średni kolor komórki
+    """
 
     def __init__(self):
         self.__tab = []
 
     def calculate(self) -> float:
-        return statistics.median(self.__tab)
+        return statistics.mean(self.__tab)
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         for i in range(bitmap.get_height()):

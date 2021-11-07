@@ -3,11 +3,13 @@
 from feature import feature
 from bitmap import bitmap_grayscale
 import statistics
+import copy
 
 
 class NonEmptyRowsFeature(feature.Feature):
     """
     Klasa oblicza liczbę niepustych wierszy
+    Cecha 6.
     """
 
     def __init__(self):
@@ -22,4 +24,4 @@ class NonEmptyRowsFeature(feature.Feature):
                     break
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
-        self.__bitmap = bitmap
+        self.__bitmap = copy.deepcopy(bitmap)

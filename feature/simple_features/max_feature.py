@@ -7,7 +7,8 @@ import statistics
 
 class MaxFeature(feature.Feature):
     """
-    Klasa oblicza podaje największy numer komórki, która nie jest biała
+    Klasa oblicza podaje największy numer komórki, która nie jest biała.
+    Cecha 4.
     """
 
     def __init__(self):
@@ -23,6 +24,6 @@ class MaxFeature(feature.Feature):
         return i
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
-        for i in range(bitmap.get_height()):
-            for j in range(bitmap.get_width()):
+        for i in range(bitmap.get_width()):
+            for j in range(bitmap.get_height()):
                 self.__tab.append(bitmap.get_cell_value(i, j))

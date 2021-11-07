@@ -7,7 +7,8 @@ import statistics
 
 class MedianFeature(feature.Feature):
     """
-    Klasa oblicza medianę z kolorów komórek
+    Klasa oblicza medianę z kolorów komórek.
+    Cecha 1.
     """
 
     def __init__(self):
@@ -17,6 +18,6 @@ class MedianFeature(feature.Feature):
         return statistics.median(self.__tab)
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
-        for i in range(bitmap.get_height()):
-            for j in range(bitmap.get_width()):
+        for i in range(bitmap.get_width()):
+            for j in range(bitmap.get_height()):
                 self.__tab.append(bitmap.get_cell_value(i, j))

@@ -19,4 +19,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint --good-names-rgxs="^[a-z]$" `find . -name "*.py"`
+        pylint --good-names-rgxs="^[a-z]$" -d duplicate-code `find . -name "*.py"`

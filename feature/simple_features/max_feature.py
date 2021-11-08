@@ -1,16 +1,15 @@
 #! /usr/bin/env python3
 
 """
-Moduł zawiera klasę wyliczajcą najbielszą komórkę na obrazku w skali szarości
+Moduł zawiera klasę wyliczajcą numer  komórki, która nie jest biała
 """
+from bitmap.bitmap_grayscale import BitmapGrayscale
+from feature.feature import Feature
 
-from feature import feature
-from bitmap import bitmap_grayscale
 
-
-class MaxFeature(feature.Feature):
+class MaxFeature(Feature):
     """
-    Klasa oblicza podaje największy numer komórki, która nie jest biała.
+    Klasa podaje największy numer komórki, która nie jest biała.
     Cecha 4.
     """
 
@@ -18,15 +17,18 @@ class MaxFeature(feature.Feature):
         self.__tab = []
 
     def calculate(self) -> float:
-        maximum = 0
+        if len(self.__tab) == 0:
+            raise RuntimeError("Run prepare() before calculate()")
+
+        maximum = -1
         i = 0
         for cell in self.__tab:
-            if cell > 0:
+            if cell < BitmapGrayscale.White:
                 maximum = i
             i += 1
         return maximum
 
-    def prepare(self, bitmap: bitmap_grayscale) -> None:
+    def prepare(self, bitmap: BitmapGrayscale) -> None:
         for i in range(bitmap.get_width()):
             for j in range(bitmap.get_height()):
                 self.__tab.append(bitmap.get_cell_value(i, j))

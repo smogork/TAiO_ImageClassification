@@ -7,7 +7,7 @@ przekazanego obrazu
 
 import abc
 
-from bitmap import bitmap_grayscale
+from bitmap.bitmap_grayscale import BitmapGrayscale
 
 
 class Feature(metaclass=abc.ABCMeta):
@@ -27,7 +27,7 @@ class Feature(metaclass=abc.ABCMeta):
         """
 
     @abc.abstractmethod
-    def prepare(self, bitmap: bitmap_grayscale) -> None:
+    def prepare(self, bitmap: BitmapGrayscale) -> None:
         """
         Metoda przygotowuje wejściową bitmpae w skali szarości do wyznaczenia implementowanej
         właściwości.

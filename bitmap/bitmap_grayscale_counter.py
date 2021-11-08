@@ -4,8 +4,6 @@
 W module istnieje klasa reprezentująca bitmapę zliczającą
 """
 
-import sys
-
 from bitmap.bitmap_grayscale import BitmapGrayscale
 
 
@@ -16,12 +14,6 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
     gdzie kolor czarny to wartosc maksymalna znaleziona w tablicy,
     a biały to 0.
     """
-
-    def __init__(self, width: int, height: int):
-        super().__init__(width, height)
-        super().white = (
-            sys.maxsize * 2 + 1
-        )  # Duża liczba w stylu MaxInt
 
     def increment_cell(self, x: int, y: int) -> int:
         """
@@ -64,7 +56,7 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
                         max_value
                         - super().get_cell_value(x, y)
                     )
-                    // max_value,
+                    // max_value * BitmapGrayscale.White,
                 )
 
         return result

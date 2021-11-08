@@ -12,6 +12,9 @@ class BitmapGrayscale:
     Klasa opisuje bitmape o okreslonych wymiarach w skali szarości 8 bitowej
     """
 
+    White = 1.0
+    Black = 0.0
+
     def __init__(self, width: int, height: int):
         """
         BUdowa pustej białem bitmapy
@@ -20,9 +23,7 @@ class BitmapGrayscale:
         """
         self.__width = width
         self.__height = height
-        self.__bitmap = [[0 for i in range(self.__width)] for j in range(self.__height)]
-        self.white = 255
-        self.black = 0
+        self.__bitmap = [[0.0 for i in range(self.__width)] for j in range(self.__height)]
 
     def get_height(self) -> int:
         """
@@ -38,7 +39,7 @@ class BitmapGrayscale:
         """
         return self.__width
 
-    def get_cell_value(self, x: int, y: int) -> int:
+    def get_cell_value(self, x: int, y: int) -> float:
         """
         Uzyskanie zawartości komórki
         :param x: kolumna
@@ -47,16 +48,13 @@ class BitmapGrayscale:
         """
         return self.__bitmap[y][x]
 
-    def set_cell_value(self, x: int, y: int, value: int) -> None:
+    def set_cell_value(self, x: int, y: int, value: float) -> None:
         """
         Ustawienie wartości w komórce
         :param x: kolumna
         :param y: wiersz
         :param value: wartośc komórki
         """
-        if value < self.black or value > self.white:
-            raise ValueError(f"Value should be in range [{self.black},{self.white}]")
-
         self.__bitmap[y][x] = value
 
     def to_png(self, path: str) -> None:
@@ -64,6 +62,11 @@ class BitmapGrayscale:
         Zapis bitmapy do pliku PNG
         :param path: Ścieżka do pliku wynikowego
         """
+        mapped_bitmap = [[0 for i in range(self.__width)] for j in range(self.__height)]
+        for y in range(self.__height):
+            for x in range(self.__width):
+                mapped_bitmap = int(round(self.__bitmap[y][x] * 255))
+
         with open(path, "wb") as f:
             writer = png.Writer(self.__width, self.__height, greyscale=True)
-            writer.write(f, self.__bitmap)
+            writer.write(f, mapped_bitmap)

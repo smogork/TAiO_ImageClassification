@@ -1,8 +1,11 @@
 #! /usr/bin/env python3
 
+"""
+Moduł zawiera klasę wyliczajcą minimalna wartość koloru obrazka w skali szarości
+"""
+
 from feature import feature
 from bitmap import bitmap_grayscale
-import statistics
 
 
 class MinFeature(feature.Feature):

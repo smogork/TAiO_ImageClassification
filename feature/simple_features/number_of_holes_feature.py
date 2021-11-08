@@ -1,9 +1,13 @@
 #! /usr/bin/env python3
 
+"""
+Moduł zawiera klasę wyliczajcą liczbę wysp na obrazku w skali szarości
+"""
+
+import copy
+
 from feature import feature
 from bitmap import bitmap_grayscale
-import statistics
-import copy
 
 
 class NumberOfIslandsFeature(feature.Feature):
@@ -26,7 +30,12 @@ class NumberOfIslandsFeature(feature.Feature):
                     break
         return count
 
-    def flood(self, i: int, j: int):
+    def flood(self, i: int, j: int) -> None:
+        """
+        Metoda implementuje algorytm zalewania od punktu o wybranych współrzędnych
+        :param i: Indeks kolumny
+        :param j: Indeks wiersza
+        """
         if i < 0 or i >= self.__bitmap.get_width():
             return
         if j < 0 or j >= self.__bitmap.get_height():

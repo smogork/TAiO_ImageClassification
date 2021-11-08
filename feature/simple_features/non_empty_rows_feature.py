@@ -1,9 +1,14 @@
 #! /usr/bin/env python3
 
+"""
+Moduł zawiera klasę wyliczajcą najdłuższy nie pusty wiersz na obrazku w skali szarości
+"""
+
+import copy
+
 from feature import feature
 from bitmap import bitmap_grayscale
-import statistics
-import copy
+
 
 
 class NonEmptyRowsFeature(feature.Feature):

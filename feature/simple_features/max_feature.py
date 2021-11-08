@@ -1,8 +1,11 @@
 #! /usr/bin/env python3
 
+"""
+Moduł zawiera klasę wyliczajcą najbielszą komórkę na obrazku w skali szarości
+"""
+
 from feature import feature
 from bitmap import bitmap_grayscale
-import statistics
 
 
 class MaxFeature(feature.Feature):
@@ -21,7 +24,7 @@ class MaxFeature(feature.Feature):
             if cell > 0:
                 maximum = i
             i += 1
-        return i
+        return maximum
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         for i in range(bitmap.get_width()):

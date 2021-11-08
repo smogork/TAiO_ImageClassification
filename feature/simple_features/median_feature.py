@@ -1,8 +1,13 @@
 #! /usr/bin/env python3
 
+"""
+Moduł zawiera klasę wyliczajcą mediane koloru obrazka w skali szarości
+"""
+
+import statistics
+
 from feature import feature
 from bitmap import bitmap_grayscale
-import statistics
 
 
 class MedianFeature(feature.Feature):

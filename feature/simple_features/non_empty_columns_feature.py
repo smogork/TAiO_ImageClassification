@@ -1,9 +1,13 @@
 #! /usr/bin/env python3
 
-from feature import feature
-from bitmap import bitmap_grayscale
-import statistics
+"""
+Moduł zawiera klasę wyliczajcą najdłuższą pustą kolumnę na obrazku w skali szarości
+"""
+
 import copy
+
+from bitmap import bitmap_grayscale
+from feature import feature
 
 
 class NonEmptyColumnsFeature(feature.Feature):

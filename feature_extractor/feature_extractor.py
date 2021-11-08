@@ -1,14 +1,15 @@
 #! /usr/bin/env python3
 
 """
-MOduł zawiera klasę definiującą zbiór właściwości.
+Moduł zawiera klasę definiującą zbiór właściwości.
 """
 
 import typing
+from multiprocessing import Pool
 
 from bitmap import bitmap_grayscale
 from feature.feature import Feature
-from multiprocessing import Pool
+
 
 class FeatureExtractor:
     """
@@ -37,21 +38,23 @@ class FeatureExtractor:
             result.append(feature.calculate())
         return result
 
-    def calculate_features_mp(self, bitmap: bitmap_grayscale) -> typing.List[float]:
+    def calculate_features_mp(self,
+                              bitmap: bitmap_grayscale,
+                              thread_number: int)\
+            -> typing.List[float]:
         """
         Metoda wyznacza wszystkie właściwości dodane wczesniej z obrazka podanego w argumencie.
         Metoda wykorzystuje pulę procesów.
         :param bitmap: Obraz w skali szarości, z którego będzie wyznaczony zbiór właściwości.
+        :param thread_number: Liczba wątków uruchomionych do obliczeń
         :return: Lista wyliczonych właściwości.
         """
-        def process_function(__feature: Feature)->float:
+        def process_function(__feature: Feature) -> float:
             __feature.prepare(bitmap)
             return __feature.calculate()
 
         result = []
         with Pool(processes=len(self.__features)) as pool:
-            # TODO
-            # Use imap with chunksize depending on available processors
-            result = pool.map(process_function, self.__features)
+            result = pool.map(process_function, thread_number)
 
         return result

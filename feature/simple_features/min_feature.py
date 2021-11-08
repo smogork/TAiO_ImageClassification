@@ -3,7 +3,7 @@
 """
 Moduł zawiera klasę wyliczajcą minimalna wartość koloru obrazka w skali szarości
 """
-
+from bitmap.bitmap_grayscale import BitmapGrayscale
 from feature import feature
 from bitmap import bitmap_grayscale
 
@@ -18,12 +18,15 @@ class MinFeature(feature.Feature):
         self.__tab = []
 
     def calculate(self) -> float:
+        if len(self.__tab) == 0:
+            raise RuntimeError("Run prepare() before calculate()")
+
         i = 0
         for cell in self.__tab:
-            if cell > 0:
+            if cell < BitmapGrayscale.White:
                 return i
             i += 1
-        return i
+        return -1
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         for i in range(bitmap.get_width()):

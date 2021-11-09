@@ -11,7 +11,7 @@ from feature.simple_features.min_feature import MinFeature
 from tests.bitmap_generator import BitmapGenerator
 
 
-class MinFeatureTests(unittest.TestCase):
+class TestMinFeature(unittest.TestCase):
     """
     Klasa testująca klase MinFeature
     """

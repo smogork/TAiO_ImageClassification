@@ -11,7 +11,7 @@ from feature.simple_features.max_feature import MaxFeature
 from tests.bitmap_generator import BitmapGenerator
 
 
-class MaxFeatureTests(unittest.TestCase):
+class TestMaxFeature(unittest.TestCase):
     """
     Klasa testująca klase MaxFeature
     """

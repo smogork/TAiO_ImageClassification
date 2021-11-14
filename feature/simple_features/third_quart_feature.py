@@ -16,7 +16,7 @@ class ThirdQuartFeature(feature.Feature):
     Cecha 20.
     """
 
-    def __init__(self, threshold: float):
+    def __init__(self):
         self.__points = []
 
     def calculate(self) -> float:

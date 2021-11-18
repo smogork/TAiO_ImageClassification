@@ -65,7 +65,7 @@ class TestMinFeature(unittest.TestCase):
 
         self.assertIs(-1, res)
 
-    def test_balck_dot(self):
+    def test_black_dot(self):
         """
         Dostarczamy bitmape całkowicie białą, z wyjątkiem jednego czrnego pixela.
         oczekujemy Numeru tego pixela.

@@ -3,6 +3,8 @@
 """
 Początkowy moduł
 """
+import argparse
+
 import numpy as np
 
 from feature.simple_features.max_feature import MaxFeature
@@ -60,7 +62,11 @@ def test_main():
     # Wypisz wyniki
     print (data)
 
-
-
 if __name__ == "__main__":
+    # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji
+    # W trybie nauki potrzebujemy sciezki do danych treningowych oraz informacji ile ostatnich ciagow ma byc traktowanych jako walidacja
+    # W trybie klasyfikacji chcemy podac sciezke do danych, ktore bedziemy klasyfikowac i dla kazdego ciagu dostac klase
+
+    parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')
+
     test_main()

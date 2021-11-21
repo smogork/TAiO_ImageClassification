@@ -65,7 +65,7 @@ class BitmapGrayscale:
         mapped_bitmap = [[0 for i in range(self.__width)] for j in range(self.__height)]
         for y in range(self.__height):
             for x in range(self.__width):
-                mapped_bitmap = int(round(self.__bitmap[y][x] * 255))
+                mapped_bitmap[y][x] = int(round(self.__bitmap[y][x] * 255))
 
         with open(path, "wb") as f:
             writer = png.Writer(self.__width, self.__height, greyscale=True)

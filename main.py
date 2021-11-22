@@ -6,6 +6,8 @@ Początkowy moduł
 import argparse
 
 import numpy as np
+from scipy.io import arff
+import pandas as pd
 
 from feature.simple_features.max_feature import MaxFeature
 from feature.simple_features.mean_feature import MeanFeature
@@ -60,7 +62,14 @@ def test_main():
     data = np.array(extractor.calculate_features(bitmap))
 
     # Wypisz wyniki
-    print (data)
+    print(data)
+
+
+def test_classify(training_path: str):
+    data = arff.loadarff(training_path)
+    df = pd.DataFrame(data[0])
+
+
 
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji
@@ -68,5 +77,6 @@ if __name__ == "__main__":
     # W trybie klasyfikacji chcemy podac sciezke do danych, ktore bedziemy klasyfikowac i dla kazdego ciagu dostac klase
 
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')
-
-    test_main()
+    parser.add_argument("train_path", help="path to training dataset")
+    args = parser.parse_args()
+    test_classify(args.train_path)

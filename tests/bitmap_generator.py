@@ -69,6 +69,10 @@ class BitmapGenerator:
         return BitmapGenerator.plain_color(width, height, BitmapGrayscale.Black)
 
     @staticmethod
+    def random(width: int, height: int) -> BitmapGrayscale:
+
+
+    @staticmethod
     def random(width: int, height: int, seed_number: int) -> BitmapGrayscale:
         res = BitmapGrayscale(width, height)
         seed(seed_number)

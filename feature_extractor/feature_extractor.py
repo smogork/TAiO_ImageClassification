@@ -19,6 +19,12 @@ class FeatureExtractor:
     def __init__(self):
         self.__features = []
 
+    def feature_count(self) -> int:
+        """
+        Zwraca informacje o liczbie zaincjalizowanych featurow
+        """
+        return len(self.__features)
+
     def add_feature(self, feature: Feature) -> None:
         """
         Metoda słuzy do dodawania właściwości, które mają byc wyznaczone z obrazów w skali szarości.

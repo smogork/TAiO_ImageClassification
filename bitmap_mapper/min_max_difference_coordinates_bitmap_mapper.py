@@ -41,7 +41,7 @@ class MinMaxDifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
         counters = BitmapGrayscaleCounter(self.__size, self.__size)
 
         # Wyliczenie rożnic i wspólrzędnych
-        x = np.array(series)
+        x = np.array([x for x in series if np.isnan(x) == False])
         max_x = np.amax(x)
         min_x = np.amin(x)
         d_x = x[1:] - x[:-1]
@@ -51,8 +51,8 @@ class MinMaxDifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
         # Zmapowanie wspolrzednych do przedzialu [min, max]
         coordinates = np.array(
             (
-                (x[1:] - min_x) / (max_x - min_x) * self.__size,
-                (d_x - min_dx) / (max_dx - min_dx) * self.__size,
+                (x[1:] - min_x) / (max_x - min_x) * (self.__size - 1),
+                (d_x - min_dx) / (max_dx - min_dx) * (self.__size - 1),
             )
         ).T
 

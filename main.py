@@ -9,6 +9,7 @@ import numpy as np
 from scipy.io import arff
 import pandas as pd
 
+from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
 from feature.simple_features.max_feature import MaxFeature
 from feature.simple_features.mean_feature import MeanFeature
 from feature.simple_features.median_feature import MedianFeature
@@ -69,7 +70,21 @@ def test_classify(training_path: str):
     data = arff.loadarff(training_path)
     df = pd.DataFrame(data[0])
 
+    classes = df.iloc[:, -1:]
+    feature_list = []
 
+    extractor = define_features()
+    bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
+    bitmap_mapper.set_bitmap_size(30)
+
+    i = 1
+    for row in df.iloc[:,:-1].iterrows():
+        bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
+        feature_list.append(extractor.calculate_features(bitmap))
+        print (f"Set {i} converted")
+        i += 1
+
+    print (len(feature_list), len(classes))
 
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji

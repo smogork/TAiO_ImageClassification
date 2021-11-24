@@ -104,6 +104,8 @@ def test_classify(training_path: str):
     df = pd.DataFrame(data[0])
 
     classes = df.iloc[:16, -1:]
+    feature_list = []
+
     extractor = define_features()
     bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
     bitmap_mapper.set_bitmap_size(30)

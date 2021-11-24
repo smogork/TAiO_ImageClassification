@@ -6,11 +6,12 @@ Moduł zawiera klasę wyliczajcą liczbę wysp na obrazku w skali szarości
 
 import copy
 
+from bitmap.bitmap_grayscale import BitmapGrayscale
 from feature import feature
 from bitmap import bitmap_grayscale
 
 
-class NumberOfIslandsFeature(feature.Feature):
+class NumberOfHolesFeature(feature.Feature):
     """
     Klasa oblicza liczbę dziur.
     Cecha 7.
@@ -40,9 +41,9 @@ class NumberOfIslandsFeature(feature.Feature):
             return
         if j < 0 or j >= self.__bitmap.get_height():
             return
-        if self.__bitmap.get_cell_value(i, j) >= self.__threshold:
+        if self.__bitmap.get_cell_value(i, j) < self.__threshold:
             return
-        self.__bitmap.set_cell_value = -1
+        self.__bitmap.set_cell_value(i, j, BitmapGrayscale.Black)
         self.flood(i - 1, j)
         self.flood(i + 1, j)
         self.flood(i, j - 1)

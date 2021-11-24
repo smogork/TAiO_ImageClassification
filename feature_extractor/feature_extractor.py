@@ -60,7 +60,7 @@ class FeatureExtractor:
             return __feature.calculate()
 
         result = []
-        with Pool(processes=len(self.__features)) as pool:
-            result = pool.map(process_function, thread_number)
+        with Pool(processes=thread_number) as pool:
+            result = pool.map(process_function, self.__features)
 
         return result

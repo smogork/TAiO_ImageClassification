@@ -29,6 +29,8 @@ class AvgSizeOfIslandFeature(feature.Feature):
                     self.count += 1
                     self.flood(i, j)
                     break
+        if self.count == 0:
+            return -1
         return self.totalSize/self.count
 
     def flood(self, i: int, j: int) -> None:

@@ -19,16 +19,18 @@ class AvgSizeOfHoleFeature(feature.Feature):
     def __init__(self, threshold: float):
         self.__bitmap = None
         self.__threshold = threshold
-        self.totalSize = 0
-        self.count = 0
+        self.totalSize = 0.0
+        self.count = 0.0
 
     def calculate(self) -> float:
         for i in range(self.__bitmap.get_width()):
             for j in range(self.__bitmap.get_height()):
                 if self.__bitmap.get_cell_value(i, j) <= self.__threshold:
-                    self.count += 1
+                    self.count += 1.0
                     self.flood(i, j)
                     break
+        if self.count == 0:
+            return -1
         return self.totalSize/self.count
 
     def flood(self, i: int, j: int) -> None:
@@ -48,7 +50,7 @@ class AvgSizeOfHoleFeature(feature.Feature):
         self.flood(i + 1, j)
         self.flood(i, j - 1)
         self.flood(i, j + 1)
-        self.totalSize += 1
+        self.totalSize += 1.0
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         self.__bitmap = copy.deepcopy(bitmap)

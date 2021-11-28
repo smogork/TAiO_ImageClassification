@@ -6,10 +6,10 @@ Moduł zawiera klasę definiującą zbiór właściwości.
 
 import typing
 from multiprocessing import Pool
-
 import numpy as np
+from itertools import repeat
 
-from bitmap import bitmap_grayscale
+from bitmap.bitmap_grayscale import BitmapGrayscale
 from feature.feature import Feature
 
 
@@ -34,7 +34,7 @@ class FeatureExtractor:
         """
         self.__features.append(feature)
 
-    def calculate_features(self, bitmap: bitmap_grayscale) -> np.ndarray:
+    def calculate_features(self, bitmap: BitmapGrayscale) -> np.ndarray:
         """
         Metoda wyznacza wszystkie właściwości dodane wczesniej z obrazka podanego w argumencie.
         :param bitmap: Obraz w skali szarości, z którego będzie wyznaczony zbiór właściwości.
@@ -48,8 +48,12 @@ class FeatureExtractor:
             i += 1
         return result
 
+    def process_function(self, feature: Feature, bitmap: BitmapGrayscale) -> float:
+        feature.prepare(bitmap)
+        return feature.calculate()
+
     def calculate_features_mp(self,
-                              bitmap: bitmap_grayscale,
+                              bitmap: BitmapGrayscale,
                               thread_number: int)\
             -> typing.List[float]:
         """
@@ -59,12 +63,8 @@ class FeatureExtractor:
         :param thread_number: Liczba wątków uruchomionych do obliczeń
         :return: Lista wyliczonych właściwości.
         """
-        def process_function(__feature: Feature) -> float:
-            __feature.prepare(bitmap)
-            return __feature.calculate()
-
-        result = np.zeros((1, self.feature_count()))
+        result = []
         with Pool(processes=thread_number) as pool:
-            result = pool.map(process_function, self.__features)
+            result = pool.starmap(self.process_function,  zip(self.__features, repeat(bitmap)))
 
         return result

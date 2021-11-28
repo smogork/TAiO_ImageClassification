@@ -4,6 +4,8 @@
 Początkowy moduł
 """
 import argparse
+from itertools import repeat
+from multiprocessing import Pool
 
 import numpy as np
 from scipy.io import arff
@@ -112,6 +114,13 @@ def map_this_shit(shit: str):
     else:
         raise RuntimeError('Shit')
 
+def count_features(result, row, extractor, i):
+    bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
+    bitmap_mapper.set_bitmap_size(30)
+    bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
+    result[i] = extractor.calculate_features(bitmap)
+    print(f"Set {i + 1} converted")
+
 def test_classify(training_path: str):
     data = arff.loadarff(training_path)
     df = pd.DataFrame(data[0])
@@ -122,15 +131,9 @@ def test_classify(training_path: str):
 
     extractor = define_features()
     feature_list = np.empty((len(classes), extractor.feature_count()))
-    bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
-    bitmap_mapper.set_bitmap_size(30)
 
-    i = 0
-    for row in df.iloc[:,:-1].iterrows():
-        bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
-        feature_list[i] = extractor.calculate_features(bitmap)
-        print (f"Set {i+1} converted")
-        i += 1
+    with Pool(processes=16) as pool:
+        pool.starmap(count_features, zip(repeat(feature_list), df.iloc[:, :-1].iterrows(), repeat(extractor), range(len(classes))))
 
     print (feature_list, classes)
 

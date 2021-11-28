@@ -31,7 +31,7 @@ class TestMedianFeature(unittest.TestCase):
     def test_reorder_calculate_prepare(self):
         """
         Test sprawdza, czy wywołanie w złej kolejności metody prepare i calculate zgłaszaja wyjątek.
-        Oczekujemy zgłoszenia wyjątku RuntimeError.
+        Oczekujemy zgłoszenia wyjątku StatisticsError.
         :return:
         """
         with self.assertRaises(StatisticsError):

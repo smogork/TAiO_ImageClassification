@@ -14,6 +14,7 @@ class NonEmptyColumnsFeature(feature.Feature):
     """
     Klasa oblicza liczbę niepustych kolumn.
     Cecha 5.
+    POdajemy threashold blisko bialego
     """
 
     def __init__(self, threshold: float):

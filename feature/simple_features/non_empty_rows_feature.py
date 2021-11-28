@@ -15,6 +15,7 @@ class NonEmptyRowsFeature(feature.Feature):
     """
     Klasa oblicza liczbę niepustych wierszy
     Cecha 6.
+    Threashold blisko czarnego
     """
 
     def __init__(self, threshold: float):

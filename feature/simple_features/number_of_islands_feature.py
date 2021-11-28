@@ -45,7 +45,7 @@ class NumberOfIslandsFeature(feature.Feature):
             return
         if self.__bitmap.get_cell_value(i, j) < self.__threshold:
             return
-        self.__bitmap.set_cell_value(i, j, BitmapGrayscale.White)
+        self.__bitmap.set_cell_value(i, j, BitmapGrayscale.Black)
         self.flood(i - 1, j)
         self.flood(i + 1, j)
         self.flood(i, j - 1)

@@ -25,7 +25,7 @@ class NumberOfHolesFeature(feature.Feature):
         count = 0
         for i in range(self.__bitmap.get_width()):
             for j in range(self.__bitmap.get_height()):
-                if self.__bitmap.get_cell_value(i, j) < self.__threshold:
+                if self.__bitmap.get_cell_value(i, j) <= self.__threshold:
                     count += 1
                     self.flood(i, j)
                     break
@@ -43,7 +43,7 @@ class NumberOfHolesFeature(feature.Feature):
             return
         if self.__bitmap.get_cell_value(i, j) > self.__threshold:
             return
-        self.__bitmap.set_cell_value(i, j, BitmapGrayscale.Black)#Ustawiamy na 1, żeby dziura nie była już liczona
+        self.__bitmap.set_cell_value(i, j, BitmapGrayscale.White)#Ustawiamy na 1, żeby dziura nie była już liczona
         self.flood(i - 1, j)
         self.flood(i + 1, j)
         self.flood(i, j - 1)

@@ -63,7 +63,7 @@ class FeatureExtractor:
             __feature.prepare(bitmap)
             return __feature.calculate()
 
-        result = []
+        result = np.zeros((1, self.feature_count()))
         with Pool(processes=thread_number) as pool:
             result = pool.map(process_function, self.__features)
 

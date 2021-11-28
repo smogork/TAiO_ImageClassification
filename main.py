@@ -8,6 +8,7 @@ import argparse
 import numpy as np
 from scipy.io import arff
 import pandas as pd
+from tensorflow import keras
 
 from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
 from feature.simple_features.avg_size_of_hole_feature import AvgSizeOfHoleFeature
@@ -98,21 +99,34 @@ def test_main():
     # Wypisz wyniki
     print(data)
 
+#TODO: ZMIENIC!!!
+def map_this_shit(shit: str):
+    if shit == 'raised_crosswalk':
+        return [1, 0, 0, 0]
+    elif shit == 'raised_markers':
+        return [0, 1, 0, 0]
+    elif shit == 'speed_bump':
+        return [0, 0, 1, 0]
+    elif shit == 'vertical_patch':
+        return [0, 0, 0, 1]
+    else:
+        raise RuntimeError('Shit')
 
 def test_classify(training_path: str):
     data = arff.loadarff(training_path)
     df = pd.DataFrame(data[0])
 
-    data_size = 16# TODO: do wyrzucenia pozniej!
-    classes = np.array(df.iloc[:data_size, -1:])
+    #data_size = 16# TODO: do wyrzucenia pozniej!
+    classes = df.iloc[:, -1:]
+    classes = np.array([map_this_shit(s[0].decode()) for s in classes.values])
 
     extractor = define_features()
-    feature_list = np.empty((data_size, extractor.feature_count()))
+    feature_list = np.empty((len(classes), extractor.feature_count()))
     bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
     bitmap_mapper.set_bitmap_size(30)
 
     i = 0
-    for row in df.iloc[:data_size,:-1].iterrows():
+    for row in df.iloc[:,:-1].iterrows():
         bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
         feature_list[i] = extractor.calculate_features(bitmap)
         print (f"Set {i+1} converted")
@@ -121,7 +135,7 @@ def test_classify(training_path: str):
     print (feature_list, classes)
 
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.learn(feature_list, classes, 16, 4)
+    model.learn(feature_list, classes, 64, 4)
 
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji

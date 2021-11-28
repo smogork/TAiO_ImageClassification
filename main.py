@@ -103,24 +103,25 @@ def test_classify(training_path: str):
     data = arff.loadarff(training_path)
     df = pd.DataFrame(data[0])
 
-    classes = df.iloc[:16, -1:]
-    feature_list = []
+    data_size = 16# TODO: do wyrzucenia pozniej!
+    classes = np.array(df.iloc[:data_size, -1:])
 
     extractor = define_features()
+    feature_list = np.empty((data_size, extractor.feature_count()))
     bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
     bitmap_mapper.set_bitmap_size(30)
 
-    i = 1
-    for row in df.iloc[:16,:-1].iterrows():
+    i = 0
+    for row in df.iloc[:data_size,:-1].iterrows():
         bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
-        feature_list.append(extractor.calculate_features(bitmap))
-        print (f"Set {i} converted")
+        feature_list[i] = extractor.calculate_features(bitmap)
+        print (f"Set {i+1} converted")
         i += 1
 
-    print (len(feature_list), len(classes))
+    print (feature_list, classes)
 
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.learn(feature_list, classes, 64, 4)
+    model.learn(feature_list, classes, 16, 4)
 
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji

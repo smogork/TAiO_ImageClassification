@@ -16,6 +16,7 @@ class Learning:
             tf.keras.layers.Dense(8, activation='relu'),# warstwa powinan byc wieksza niz output
             tf.keras.layers.Dense(output_size, activation='sigmoid')# output =4 w testach
         ])
+        self.__model.summary()
         self.__model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     def learn(self, features, classes, epochs, batch_size):

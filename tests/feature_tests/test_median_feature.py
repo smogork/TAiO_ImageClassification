@@ -5,6 +5,7 @@ Modul zawiera testy klasy MedianFeature
 """
 
 import unittest
+from statistics import StatisticsError
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
 from feature.simple_features.median_feature import MedianFeature
@@ -30,8 +31,8 @@ class TestMedianFeature(unittest.TestCase):
     def test_reorder_calculate_prepare(self):
         """
         Test sprawdza, czy wywołanie w złej kolejności metody prepare i calculate zgłaszaja wyjątek.
-        Oczekujemy zgłoszenia wyjątku RuntimeError.
+        Oczekujemy zgłoszenia wyjątku StatisticsError.
         :return:
         """
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(StatisticsError):
             self.feature.calculate()

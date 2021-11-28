@@ -10,7 +10,7 @@ from feature import feature
 from bitmap import bitmap_grayscale
 
 
-class NumberOfIslandsFeature(feature.Feature):
+class NumberOfHolesFeature(feature.Feature):
     """
     Klasa oblicza liczbę dziur.
     Cecha 7.

@@ -1,3 +1,4 @@
+from statistics import StatisticsError
 from unittest import TestCase
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
@@ -27,5 +28,5 @@ class TestMeanFeature(TestCase):
         Oczekujemy zgłoszenia wyjątku RuntimeError.
         :return:
         """
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(StatisticsError):
             self.feature.calculate()

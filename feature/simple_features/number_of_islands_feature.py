@@ -39,9 +39,9 @@ class NumberOfIslandsFeature(feature.Feature):
             return
         if j < 0 or j >= self.__bitmap.get_height():
             return
-        if self.__bitmap.get_cell_value(i, j) < self.__threshold:
+        if self.__bitmap.get_cell_value(i, j) <= self.__threshold:
             return
-        self.__bitmap.set_cell_value = -1
+        self.__bitmap.set_cell_value(i, j, 0.0)#Ustawiamy wartość na 0, żeby pokazać że piksel policzony
         self.flood(i - 1, j)
         self.flood(i + 1, j)
         self.flood(i, j - 1)

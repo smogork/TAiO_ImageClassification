@@ -25,7 +25,7 @@ class AvgSizeOfHoleFeature(feature.Feature):
     def calculate(self) -> float:
         for i in range(self.__bitmap.get_width()):
             for j in range(self.__bitmap.get_height()):
-                if self.__bitmap.get_cell_value(i, j) < self.__threshold:
+                if self.__bitmap.get_cell_value(i, j) <= self.__threshold:
                     self.count += 1
                     self.flood(i, j)
                     break
@@ -43,7 +43,7 @@ class AvgSizeOfHoleFeature(feature.Feature):
             return
         if self.__bitmap.get_cell_value(i, j) >= self.__threshold:
             return
-        self.__bitmap.set_cell_value = -1
+        self.__bitmap.set_cell_value(i, j, 1.0)#Ustawiamy na 1, żeby dziura nie była już liczona
         self.flood(i - 1, j)
         self.flood(i + 1, j)
         self.flood(i, j - 1)

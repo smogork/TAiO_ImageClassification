@@ -31,13 +31,13 @@ class LongestNonEmptyAntidiagonalFeature(feature.Feature):
                 if self.__bitmap.get_cell_value(i, j) >= self.__threshold:
                     length += 1
                     i -= 1
-                    j -= 1
+                    j += 1
                     continue
                 if length > count:
                     count = length
                 length = 0
                 i -= 1
-                j -= 1
+                j += 1
             if length > count:
                 count = length
         return count
@@ -59,7 +59,7 @@ class LongestNonEmptyAntidiagonalFeature(feature.Feature):
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         self.__bitmap = copy.deepcopy(bitmap)
-        for i in range(self.__bitmap.getWidth()):
-            self.__starting_points.append(0, i)
-        for i in range(self.__bitmap.getHeight()):
-            self.__starting_points.append((i, self.__bitmap.getWidth() - 1))
+        for i in range(self.__bitmap.get_height()):
+            self.__starting_points.append((self.__bitmap.get_width() - 1, i))
+        for i in range(self.__bitmap.get_width()):
+            self.__starting_points.append((i, 0))

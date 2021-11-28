@@ -17,16 +17,18 @@ class NonEmptyRowsFeature(feature.Feature):
     Cecha 6.
     """
 
-    def __init__(self):
+    def __init__(self, threshold: float):
         self.__bitmap = None
+        self.__threshold = threshold
 
     def calculate(self) -> float:
-        count = 0
-        for j in range(self.__bitmap.get_width()):
-            for i in range(self.__bitmap.get_height()):
-                if self.__bitmap.get_cell_value(i, j) > 0:
-                    count += 1
+        count = 0.0
+        for i in range(self.__bitmap.get_height()):
+            for j in range(self.__bitmap.get_width()):
+                if self.__bitmap.get_cell_value(i, j) >= self.__threshold:
+                    count += 1.0
                     break
+        return count
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         self.__bitmap = copy.deepcopy(bitmap)

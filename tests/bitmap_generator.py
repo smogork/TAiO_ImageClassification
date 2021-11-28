@@ -5,6 +5,7 @@ Moduł zawiera klasy generujące bitmapy na potrzeby testów jednostkowych
 """
 
 from typing import Callable
+from random import random,seed
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
 
@@ -66,3 +67,15 @@ class BitmapGenerator:
         :return: Bitmapa o kolorze czarnym
         """
         return BitmapGenerator.plain_color(width, height, BitmapGrayscale.Black)
+
+    @staticmethod
+    def random(width: int, height: int, seed_number: int) -> BitmapGrayscale:
+        res = BitmapGrayscale(width, height)
+        seed(seed_number)
+        BitmapGenerator.iterate_through_bitmap(
+            res,
+            lambda bitmap, x, y:
+                bitmap.set_cell_value(x, y, random())
+        )
+        return res
+

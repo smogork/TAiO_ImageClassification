@@ -63,3 +63,4 @@ class LongestNonEmptyAntidiagonalFeature(feature.Feature):
             self.__starting_points.append((self.__bitmap.get_width() - 1, i))
         for i in range(self.__bitmap.get_width()):
             self.__starting_points.append((i, 0))
+

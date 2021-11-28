@@ -101,8 +101,8 @@ def test_main():
     # Wypisz wyniki
     print(data)
 
-#TODO: ZMIENIC!!!
-def map_this_shit(shit: str):
+def map_classes(shit: str):
+    # Przykladowe dane
     if shit == 'raised_crosswalk':
         return [1, 0, 0, 0]
     elif shit == 'raised_markers':
@@ -127,7 +127,7 @@ def test_classify(training_path: str):
 
     #data_size = 16# TODO: do wyrzucenia pozniej!
     classes = df.iloc[:, -1:]
-    classes = np.array([map_this_shit(s[0].decode()) for s in classes.values])
+    classes = np.array([map_classes(s[0].decode()) for s in classes.values])
 
     extractor = define_features()
     feature_list = np.empty((len(classes), extractor.feature_count()))

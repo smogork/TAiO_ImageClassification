@@ -81,3 +81,23 @@ class TestMinFeature(unittest.TestCase):
         res = self.count_feature(bitmap)
 
         self.assertIs(res, size * x + y)
+
+
+    def test_plain_white_then_black_dot(self):
+        """
+        Dostarczamy bitmape całkowicie białą, z wyjątkiem jednego czrnego pixela.
+        oczekujemy Numeru tego pixela.
+        :return:
+        """
+        size = 5
+        x = 2
+        y = 4
+        bitmap = BitmapGenerator.plain_white(size, size)
+        bitmap.set_cell_value(x, y, BitmapGrayscale.Black)# czarna kropka
+        bitmap.set_cell_value(x + 1, y, BitmapGrayscale.Black)# czarna kropka 2
+
+        res1 = self.count_feature(BitmapGenerator.plain_white(size, size))
+        res2 = self.count_feature(bitmap)
+
+        self.assertIs(res1, -1)
+        self.assertIs(res2, size * x + y)

@@ -80,3 +80,24 @@ class TestMaxFeature(unittest.TestCase):
         res = self.count_feature(bitmap)
 
         self.assertIs(res, size * x + y)
+
+    def test_black_dot_multiple_times(self):
+        """
+        Dostarczamy bitmape całkowicie białą, z wyjątkiem jednego czrnego pixela.
+        oczekujemy Numeru tego pixela.
+        TEst uruchamiamy 3 razy
+        :return:
+        """
+        size = 5
+        x = 4
+        y = 1
+        bitmap = BitmapGenerator.plain_white(size, size)
+        bitmap.set_cell_value(x, y, BitmapGrayscale.Black)# czarna kropka
+
+        res1 = self.count_feature(bitmap)
+        res2 = self.count_feature(bitmap)
+        res3 = self.count_feature(bitmap)
+
+        self.assertIs(res1, size * x + y)
+        self.assertIs(res2, size * x + y)
+        self.assertIs(res3, size * x + y)

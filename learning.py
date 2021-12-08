@@ -12,8 +12,8 @@ class Learning:
         # Wzorowalem sie na https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
         # UWAGA - dla kazdych danych nalezy zmienic strukture sieci!!!
         self.__model = tf.keras.Sequential([
-            tf.keras.layers.Dense(32,  input_dim=input_size, activation='relu'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
-            tf.keras.layers.Dense(8, activation='relu'),# warstwa powinan byc wieksza niz output
+            tf.keras.layers.Dense(8,  input_dim=input_size, activation='relu'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
+            #tf.keras.layers.Dense(8, activation='relu'),# warstwa powinan byc wieksza niz output
             tf.keras.layers.Dense(output_size)# output =4 w testach
         ])
         self.__model.summary()

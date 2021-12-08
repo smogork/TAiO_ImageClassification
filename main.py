@@ -4,6 +4,7 @@
 Początkowy moduł
 """
 import argparse
+import time
 from itertools import repeat
 from multiprocessing import Pool
 
@@ -112,21 +113,9 @@ def map_classes(class_str: str):
     else:
         raise RuntimeError('Unknown class')
 
-def count_features(result, row, extractor, i):
-    bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
-    bitmap_mapper.set_bitmap_size(30)
-    bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
-    res = extractor.calculate_features(bitmap)
-
-    if np.any(np.isnan(res)) or np.any(np.isinf(res)):
-        print(f'Set {i + 1} has wrong values')
-        print(f'NaNs: {np.argwhere(np.isnan(res))}')
-        print(f'Infs: {np.argwhere(np.isinf(res))}')
-
-    result[i] = res
-    print(f"Set {i + 1} converted")
-
 def test_classify(training_path: str):
+    global feature_list
+
     data = arff.loadarff(training_path)
     df = pd.DataFrame(data[0])
 
@@ -137,21 +126,21 @@ def test_classify(training_path: str):
     extractor = define_features()
     feature_list = np.empty((len(classes), extractor.feature_count()))
 
-    #with Pool(processes=16) as pool:
-    #    pool.starmap(count_features, zip(repeat(feature_list), df.iloc[:, :-1].iterrows(), repeat(extractor), range(len(classes))))
     i = 0
     for row in df.iloc[:, :-1].iterrows():
+        start = time.process_time_ns()
         bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
         bitmap_mapper.set_bitmap_size(30)
         bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
         feature_list[i] = extractor.calculate_features(bitmap)
-        print(f"Set {i + 1} converted")
+        end = time.process_time_ns()
+        print(f"Set {i + 1} converted at {(end - start) / 1e6} ms")
         i += 1
 
     print (feature_list, classes)
 
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.learn(feature_list, classes, 64, 4)
+    model.learn(feature_list, classes, 16, 1)
 
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji

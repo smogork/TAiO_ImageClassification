@@ -31,4 +31,4 @@ class SecondCentralMomentVerticalFeature(feature.Feature):
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         self.__columnsSum = np.zeros(bitmap.get_height())
         for i in range(bitmap.get_width()):
-            self.__columnsSum[i] = bitmap.get_column(i)
+            self.__columnsSum[i] = bitmap.get_column(i).sum()

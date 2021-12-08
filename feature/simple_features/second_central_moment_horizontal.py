@@ -31,4 +31,4 @@ class SecondCentralMomentHorizontalFeature(feature.Feature):
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         self.__rowsSum = np.zeros(bitmap.get_height())
         for i in range(bitmap.get_height()):
-            self.__rowsSum[i] = bitmap.get_row(i)
+            self.__rowsSum[i] = bitmap.get_row(i).sum()

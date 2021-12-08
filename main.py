@@ -101,24 +101,31 @@ def test_main():
     # Wypisz wyniki
     print(data)
 
-def map_classes(shit: str):
+def map_classes(class_str: str):
     # Przykladowe dane
-    if shit == 'raised_crosswalk':
+    if class_str == 'raised_crosswalk':
         return [1, 0, 0, 0]
-    elif shit == 'raised_markers':
+    elif class_str == 'raised_markers':
         return [0, 1, 0, 0]
-    elif shit == 'speed_bump':
+    elif class_str == 'speed_bump':
         return [0, 0, 1, 0]
-    elif shit == 'vertical_patch':
+    elif class_str == 'vertical_patch':
         return [0, 0, 0, 1]
     else:
-        raise RuntimeError('Shit')
+        raise RuntimeError('Unknown class')
 
 def count_features(result, row, extractor, i):
     bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
     bitmap_mapper.set_bitmap_size(30)
     bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
-    result[i] = extractor.calculate_features(bitmap)
+    res = extractor.calculate_features(bitmap)
+
+    if np.any(np.isnan(res)) or np.any(np.isinf(res)):
+        print(f'Set {i + 1} has wrong values')
+        print(f'NaNs: {np.argwhere(np.isnan(res))}')
+        print(f'Infs: {np.argwhere(np.isinf(res))}')
+
+    result[i] = res
     print(f"Set {i + 1} converted")
 
 def test_classify(training_path: str):
@@ -132,8 +139,16 @@ def test_classify(training_path: str):
     extractor = define_features()
     feature_list = np.empty((len(classes), extractor.feature_count()))
 
-    with Pool(processes=16) as pool:
-        pool.starmap(count_features, zip(repeat(feature_list), df.iloc[:, :-1].iterrows(), repeat(extractor), range(len(classes))))
+    #with Pool(processes=16) as pool:
+    #    pool.starmap(count_features, zip(repeat(feature_list), df.iloc[:, :-1].iterrows(), repeat(extractor), range(len(classes))))
+    i = 0
+    for row in df.iloc[:, :-1].iterrows():
+        bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
+        bitmap_mapper.set_bitmap_size(30)
+        bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
+        feature_list[i] = extractor.calculate_features(bitmap)
+        print(f"Set {i + 1} converted")
+        i += 1
 
     print (feature_list, classes)
 

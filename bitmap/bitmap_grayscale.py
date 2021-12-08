@@ -3,8 +3,9 @@
 """
 W module istnieje klasa reprezentująca bitmapę w skali szarości
 """
-
+import numpy as np
 import png
+from numpy import ndarray
 
 
 class BitmapGrayscale:
@@ -23,7 +24,7 @@ class BitmapGrayscale:
         """
         self.__width = width
         self.__height = height
-        self.__bitmap = [[0.0 for i in range(self.__width)] for j in range(self.__height)]
+        self.__bitmap = np.zeros((height, width))
 
     def get_height(self) -> int:
         """
@@ -38,6 +39,12 @@ class BitmapGrayscale:
         :return: Szerokość
         """
         return self.__width
+
+    def get_row(self, rowNum: int) -> ndarray :
+        return self.__bitmap[rowNum, :]
+
+    def get_column(self, colNum: int) -> ndarray :
+        return self.__bitmap[:, colNum]
 
     def get_cell_value(self, x: int, y: int) -> float:
         """

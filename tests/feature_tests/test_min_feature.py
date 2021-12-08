@@ -85,7 +85,7 @@ class TestMinFeature(unittest.TestCase):
 
     def test_plain_white_then_black_dot(self):
         """
-        Dostarczamy bitmape całkowicie białą, z wyjątkiem jednego czrnego pixela.
+        Dostarczamy bitmape całkowicie białą,pozniej białą z wyjątkiem jednego czrnego pixela.
         oczekujemy Numeru tego pixela.
         :return:
         """

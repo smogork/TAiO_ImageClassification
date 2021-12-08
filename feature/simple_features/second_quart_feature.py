@@ -17,9 +17,12 @@ class SecondQuartFeature(feature.Feature):
     """
 
     def __init__(self):
-        self.__points = []
+        self.__points = None
 
     def calculate(self) -> float:
+        if self.__points is None:
+            raise RuntimeError("Run prepare() before calculate()")
+
         count = 0
         for x in self.__points:
             if 0.25 < x <= 0.5:
@@ -27,6 +30,4 @@ class SecondQuartFeature(feature.Feature):
         return count
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
-        for i in range(bitmap.get_width()):
-            for j in range(bitmap.get_height()):
-                self.__points.append(bitmap.get_cell_value(i, j))
+        self.__points = super()._map_bitmap_to_single_dimention(bitmap)

@@ -25,10 +25,8 @@ class MinFeature(feature.Feature):
         i = 0
         for cell in self.__tab:
             if cell < BitmapGrayscale.White:
-                self.__tab = None
                 return i
             i += 1
-        self.__tab = None
         return -1
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:

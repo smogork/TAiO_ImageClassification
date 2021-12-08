@@ -5,19 +5,18 @@ Modul zawiera testy klasy FirstRawMomentVerticalFeature
 """
 
 import unittest
-from statistics import StatisticsError
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
-from feature.simple_features.first_raw_moment_vertical import FirstRawMomentVerticalFeature
+from feature.simple_features.second_central_moment_vertical import SecondCentralMomentVerticalFeature
 from tests.bitmap_generator import BitmapGenerator
 
 
-class TestFirstRawMomentVerticalFeature(unittest.TestCase):
+class TestSecondCentralMomentVerticalFeature(unittest.TestCase):
     """
     Klasa testująca klase FirstRawMomentVerticalFeature
     """
     def setUp(self):
-        self.feature = FirstRawMomentVerticalFeature()
+        self.feature = SecondCentralMomentVerticalFeature()
 
     def count_feature(self, bitmap: BitmapGrayscale) -> float:
         """

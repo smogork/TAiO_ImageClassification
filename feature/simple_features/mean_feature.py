@@ -23,6 +23,7 @@ class MeanFeature(feature.Feature):
         return statistics.mean(self.__tab)
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
+        self.__tab = []
         for i in range(bitmap.get_width()):
             for j in range(bitmap.get_height()):
                 self.__tab.append(bitmap.get_cell_value(i, j))

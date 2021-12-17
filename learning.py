@@ -5,7 +5,7 @@ Modul zawiera klase do nauki sieci kerasem
 """
 
 import tensorflow as tf
-from tensorflow.keras import datasets, layers, models
+from tensorflow.keras import datasets, layers, models, optimizers
 
 from data_parsers.image_learning_data import ImageLearningData
 from data_parsers.learning_data import LearningData
@@ -19,7 +19,7 @@ class Learning:
         self.__model = tf.keras.Sequential([
             tf.keras.layers.Dense(32,  input_dim=input_size, activation='relu'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
             tf.keras.layers.Dense(8, activation='relu'),# warstwa powinan byc wieksza niz output
-            tf.keras.layers.Dense(output_size)# output =4 w testach
+            tf.keras.layers.Dense(output_size, activation="sigmoid")# output =4 w testach
         ])
         self.__model.summary()
         self.__model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -46,11 +46,13 @@ class ImageLearning:
         self.__model.add(layers.Conv2D(2*input_size, (1, 1), activation='relu'))
         self.__model.add(layers.MaxPooling2D((2, 2)))
         self.__model.add(layers.Conv2D(2*input_size, (1, 1), activation='relu'))
+        self.__model.add(layers.MaxPooling2D((2, 2)))
         self.__model.add(layers.Flatten())
-        self.__model.add(layers.Dense(2*input_size, activation='relu'))
-        self.__model.add(layers.Dense(output_size))
+        self.__model.add(layers.Dense(output_size, activation="sigmoid"))
         self.__model.summary()
-        self.__model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+        opt = optimizers.Adam()
+        self.__model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
     def learn(self, data: ImageLearningData, epochs: int, batch_size: int):
         features, classes = data.get_training_data()

@@ -128,4 +128,5 @@ if __name__ == "__main__":
     parser.add_argument("train_path", help="path to training dataset")
     parser.add_argument("test_path", help="path to testing dataset")
     args = parser.parse_args()
-    test_classify_images(args.train_path, args.test_path)
+    test_classify(args.train_path, args.test_path)
+    #test_classify_images(args.train_path, args.test_path)

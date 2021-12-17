@@ -56,7 +56,7 @@ class BitmapGrayscaleCounter(BitmapGrayscale):
                         max_value
                         - super().get_cell_value(x, y)
                     )
-                    // max_value * BitmapGrayscale.White,
+                    / max_value * BitmapGrayscale.White,
                 )
 
         return result

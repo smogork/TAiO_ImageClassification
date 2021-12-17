@@ -50,14 +50,14 @@ def define_features() -> FeatureExtractor:
     """
     extractor = FeatureExtractor()
 
-    #extractor.add_feature(MaxFeature())#1
-    #extractor.add_feature(MinFeature())
+    extractor.add_feature(MaxFeature())#1
+    extractor.add_feature(MinFeature())
     extractor.add_feature(MeanFeature())
-    #extractor.add_feature(MedianFeature())
-    #extractor.add_feature(NonEmptyColumnsFeature(0.05))#5
-    #extractor.add_feature(NonEmptyRowsFeature(0.95))
-    #extractor.add_feature(ThirdQuartFeature())
-    #extractor.add_feature(SecondQuartFeature())
+    extractor.add_feature(MedianFeature())
+    extractor.add_feature(NonEmptyColumnsFeature(0.05))#5
+    extractor.add_feature(NonEmptyRowsFeature(0.95))
+    extractor.add_feature(ThirdQuartFeature())
+    extractor.add_feature(SecondQuartFeature())
     extractor.add_feature(SecondCentralMomentVerticalFeature())
     extractor.add_feature(SecondCentralMomentHorizontalFeature())#10
     extractor.add_feature(NumberOfIslandsFeature(0.05))# blisko czarnego - NIE DZIALA
@@ -68,7 +68,7 @@ def define_features() -> FeatureExtractor:
     extractor.add_feature(AvgSizeOfHoleFeature(0.95))# blisko bialego
     extractor.add_feature(FourthQuartFeature())
     extractor.add_feature(LongestNonEmptyRowFeature(0.05))# blisko czarnego
-    #extractor.add_feature(LongestNonEmptyDiagonalFeature(0.05))# blisko czarnego
+    extractor.add_feature(LongestNonEmptyDiagonalFeature(0.05))# blisko czarnego
     extractor.add_feature(LongestNonEmptyColumnFeature(0.05))# blisko czarnego # 20
     extractor.add_feature(LongestNonEmptyAntidiagonalFeature(0.05))# blisko czarnego
     extractor.add_feature(FirstQuartFeature())# 22

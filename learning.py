@@ -38,7 +38,7 @@ class Learning:
 class ImageLearning:
 
     def __init__(self, input_size: int, output_size: int):
-        # Wzorowalem sie na https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
+        # Wzorowalem sie na https://www.tensorflow.org/tutorials/images/cnn?hl=en
         # UWAGA - dla kazdych danych nalezy zmienic strukture sieci!!!
         self.__model = models.Sequential()
         self.__model.add(layers.Conv2D(input_size, (1, 1), activation='relu', input_shape=(input_size, input_size, 1)))

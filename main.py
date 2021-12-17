@@ -109,15 +109,14 @@ def test_classify(training_path: str, test_path: str):
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.learn(data, 64, 16)
-    model.evaluate(data)
+    model.plot_history(model.learn(data, 1024, 32))
+
 
 def test_classify_images(training_path: str, test_path: str):
     data = ImageLearningData(training_path, test_path, MinMaxDifferenceCoordinatesBitmapMapper())
 
     model = ImageLearning(30, 4)  # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.learn(data, 32, 16)
-    model.evaluate(data)
+    model.plot_history(model.learn(data, 128, 32))
 
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji

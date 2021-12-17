@@ -77,3 +77,6 @@ class BitmapGrayscale:
         with open(path, "wb") as f:
             writer = png.Writer(self.__width, self.__height, greyscale=True)
             writer.write(f, mapped_bitmap)
+
+    def get_array(self):
+        return np.array(self.__bitmap)

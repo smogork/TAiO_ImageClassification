@@ -7,9 +7,6 @@ Modul zawiera klase do nauki sieci kerasem
 import tensorflow as tf
 from tensorflow.keras import datasets, layers, models, optimizers
 import matplotlib.pyplot as plt
-import matplotlib as mpl
-# mpl.use('Qt5Agg')  # interactive mode works with this, pick one
-#mpl.use('TkAgg')  # interactive mode works with this, pick one
 
 from data_parsers.image_learning_data import ImageLearningData
 from data_parsers.learning_data import LearningData
@@ -21,7 +18,6 @@ class Learning:
         # Wzorowalem sie na https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
         # UWAGA - dla kazdych danych nalezy zmienic strukture sieci!!!
         self.__model = tf.keras.Sequential([
-            #tf.keras.layers.Dense(output_size,  input_dim=input_size, activation='sigmoid'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
             tf.keras.layers.Dense(2*input_size,  input_dim=input_size, activation='relu'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
             tf.keras.layers.Dense(3*output_size, activation='relu'),# warstwa powinan byc wieksza niz output
             tf.keras.layers.Dense(output_size, activation="sigmoid")# output =4 w testach
@@ -35,7 +31,6 @@ class Learning:
         test_features, test_classes = data.get_testing_data()
         return self.__model.fit(features, classes, epochs=epochs, batch_size=batch_size,
                          validation_data=(test_features, test_classes))
-
 
     def plot_history(self, history):
         fig, ax = plt.subplots()

@@ -81,29 +81,6 @@ def main():
     :return:
     """
 
-def test_main():
-    """
-    Testowa funkcja main z losowaniem obrazka
-    :return:
-    """
-    # Wylosuj jakąkolwiek bitmpae o wymiarach 30x30
-    size = 30
-    seed = 1234
-    bitmap = BitmapGenerator.random(size, size, seed)
-    bitmap.to_png("test_main.png")
-
-    # Zdefiniuj feature do eksperymentów
-    extractor = define_features()
-
-    # Wyznacz wszystkie feature'y
-    # np.array(extractor.calculate_features_mp(bitmap, 4))
-    data = np.array(extractor.calculate_features(bitmap))
-
-    # Wypisz wyniki
-    print(data)
-
-
-
 def test_classify(training_path: str, test_path: str):
     extractor = define_features()
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
@@ -111,21 +88,21 @@ def test_classify(training_path: str, test_path: str):
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
     model.plot_history(model.learn(data, 1024, 32))
 
-
-def test_classify_images(training_path: str, test_path: str):
-    data = ImageLearningData(training_path, test_path, MinMaxDifferenceCoordinatesBitmapMapper())
-
-    model = ImageLearning(30, 4)  # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.plot_history(model.learn(data, 128, 32))
-
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji
     # W trybie nauki potrzebujemy sciezki do danych treningowych oraz informacji ile ostatnich ciagow ma byc traktowanych jako walidacja
     # W trybie klasyfikacji chcemy podac sciezke do danych, ktore bedziemy klasyfikowac i dla kazdego ciagu dostac klase
 
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')
-    parser.add_argument("train_path", help="path to training dataset")
-    parser.add_argument("test_path", help="path to testing dataset")
+    subparser = parser.add_subparsers()
+    parser_training = subparser.add_parser('training')
+    parser_training.add_argument("train_path", help="path to training dataset")
+    parser_training.add_argument("test_path", help="path to testing dataset")
+    parser_training.add_argument("-o", "--output", help="Output path for model from learning process", default="model.keras")
+    parser_classify = subparser.add_parser('classify')
+    parser_classify.add_argument("model_path", help="path to model file")
+    parser_classify.add_argument("classification_path", help="path to objects to classify")
     args = parser.parse_args()
+
+
     test_classify(args.train_path, args.test_path)
-    #test_classify_images(args.train_path, args.test_path)

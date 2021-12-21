@@ -4,9 +4,9 @@
 Modul zawiera klase do nauki sieci kerasem
 """
 import keras
-import tensorflow as tf
-from tensorflow.keras import datasets, layers, models, optimizers
 import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras import optimizers
 
 from data_parsers.classify_data import ClassifyData
 from data_parsers.learning_data import LearningData
@@ -18,6 +18,7 @@ class Learning:
         # Wzorowalem sie na https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
         # UWAGA - dla kazdych danych nalezy zmienic strukture sieci!!!
         self.__model = tf.keras.Sequential([
+            #tf.keras.layers.Dense(output_size,  input_dim=input_size, activation='sigmoid'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
             tf.keras.layers.Dense(2*input_size,  input_dim=input_size, activation='relu'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
             tf.keras.layers.Dense(3*output_size, activation='relu'),# warstwa powinan byc wieksza niz output
             tf.keras.layers.Dense(output_size, activation="sigmoid")# output =4 w testach
@@ -51,6 +52,7 @@ class LearningClassify:
         self.__model = keras.models.load_model(model_path)
 
     def classify(self, data: ClassifyData):
-        classes = self.__model.predict(data.get_classify_data())
+        data = data.get_classify_data()
+        classes = self.__model.predict(data)
         for c in classes:
             print(c)

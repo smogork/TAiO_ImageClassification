@@ -4,14 +4,6 @@
 Początkowy moduł
 """
 import argparse
-import time
-from itertools import repeat
-from multiprocessing import Pool
-
-import numpy as np
-from scipy.io import arff
-import pandas as pd
-from tensorflow import keras
 
 from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
 from data_parsers.classify_data import ClassifyData
@@ -40,7 +32,6 @@ from feature.simple_features.second_quart_feature import SecondQuartFeature
 from feature.simple_features.third_quart_feature import ThirdQuartFeature
 from feature_extractor.feature_extractor import FeatureExtractor
 from learning import Learning, LearningClassify
-from tests.bitmap_generator import BitmapGenerator
 
 
 def define_features() -> FeatureExtractor:
@@ -87,14 +78,10 @@ def train_main(training_path: str, test_path: str, output_path: str):
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.plot_history(model.learn(data, 1024, 32))
+    model.plot_history(model.learn(data, 1024, 8))
     model.save_model(output_path)
 
 if __name__ == "__main__":
-    # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji
-    # W trybie nauki potrzebujemy sciezki do danych treningowych oraz informacji ile ostatnich ciagow ma byc traktowanych jako walidacja
-    # W trybie klasyfikacji chcemy podac sciezke do danych, ktore bedziemy klasyfikowac i dla kazdego ciagu dostac klase
-
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')
     subparser = parser.add_subparsers(dest='mode')
     parser_training = subparser.add_parser('training')

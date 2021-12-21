@@ -14,7 +14,6 @@ import pandas as pd
 from tensorflow import keras
 
 from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
-from data_parsers.image_learning_data import ImageLearningData
 from data_parsers.learning_data import LearningData
 from feature.simple_features.avg_size_of_hole_feature import AvgSizeOfHoleFeature
 from feature.simple_features.avg_size_of_island_feature import AvgSizeOfIslandFeature

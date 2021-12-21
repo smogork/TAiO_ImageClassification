@@ -26,20 +26,11 @@ class Learning:
         opt = optimizers.Adam(learning_rate=5e-5)
         self.__model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
-    def __init__(self, model_path: str):
-        self.__model = keras.models.load_model(model_path, compile=False)
-
     def learn(self, data: LearningData, epochs: int, batch_size: int):
         features, classes = data.get_training_data()
         test_features, test_classes = data.get_testing_data()
         return self.__model.fit(features, classes, epochs=epochs, batch_size=batch_size,
                          validation_data=(test_features, test_classes))
-
-    def classify(self, data: ClassifyData):
-        classes = self.__model.predict_classes(data.get_classify_data())
-        # show the inputs and predicted outputs
-        for i in range(len(classes)):
-            print(f"Set {i+1}, class:{data.classes_array_to_str(classes[i])}")
 
     def plot_history(self, history):
         fig, ax = plt.subplots()
@@ -54,3 +45,12 @@ class Learning:
     def save_model(self, path: str):
         if self.__model is not None:
             self.__model.save(path)
+
+class LearningClassify:
+    def __init__(self, model_path: str):
+        self.__model = keras.models.load_model(model_path)
+
+    def classify(self, data: ClassifyData):
+        classes = self.__model.predict(data.get_classify_data())
+        for c in classes:
+            print(c)

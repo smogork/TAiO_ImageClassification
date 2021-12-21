@@ -14,6 +14,7 @@ import pandas as pd
 from tensorflow import keras
 
 from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
+from data_parsers.classify_data import ClassifyData
 from data_parsers.learning_data import LearningData
 from feature.simple_features.avg_size_of_hole_feature import AvgSizeOfHoleFeature
 from feature.simple_features.avg_size_of_island_feature import AvgSizeOfIslandFeature
@@ -38,7 +39,7 @@ from feature.simple_features.second_central_moment_vertical import SecondCentral
 from feature.simple_features.second_quart_feature import SecondQuartFeature
 from feature.simple_features.third_quart_feature import ThirdQuartFeature
 from feature_extractor.feature_extractor import FeatureExtractor
-from learning import Learning, ImageLearning
+from learning import Learning, LearningClassify
 from tests.bitmap_generator import BitmapGenerator
 
 
@@ -74,18 +75,20 @@ def define_features() -> FeatureExtractor:
 
     return extractor
 
-def main():
-    """
-    Docelowa funkcja main
-    :return:
-    """
+def classify_main(model_path: str, classify_data_path: str):
+    extractor = define_features()
+    data = ClassifyData(classify_data_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
-def test_classify(training_path: str, test_path: str):
+    model = LearningClassify(model_path)
+    model.classify(data)
+
+def train_main(training_path: str, test_path: str, output_path: str):
     extractor = define_features()
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
     model.plot_history(model.learn(data, 1024, 32))
+    model.save_model(output_path)
 
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji
@@ -93,7 +96,7 @@ if __name__ == "__main__":
     # W trybie klasyfikacji chcemy podac sciezke do danych, ktore bedziemy klasyfikowac i dla kazdego ciagu dostac klase
 
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')
-    subparser = parser.add_subparsers()
+    subparser = parser.add_subparsers(dest='mode')
     parser_training = subparser.add_parser('training')
     parser_training.add_argument("train_path", help="path to training dataset")
     parser_training.add_argument("test_path", help="path to testing dataset")
@@ -103,5 +106,7 @@ if __name__ == "__main__":
     parser_classify.add_argument("classification_path", help="path to objects to classify")
     args = parser.parse_args()
 
-
-    test_classify(args.train_path, args.test_path)
+    if args.mode == "classify":
+        classify_main(args.model_path, args.classification_path)
+    elif args.mode == "training":
+        train_main(args.train_path, args.test_path, args.output)

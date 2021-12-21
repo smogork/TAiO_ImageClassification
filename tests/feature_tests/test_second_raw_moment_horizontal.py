@@ -8,16 +8,16 @@ import unittest
 from statistics import StatisticsError
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
-from feature.simple_features.first_raw_moment_horizontal import FirstRawMomentHorizontalFeature
+from feature.simple_features.second_central_moment_horizontal import SecondCentralMomentHorizontalFeature
 from tests.bitmap_generator import BitmapGenerator
 
 
-class TestFirstRawMomentHorizontalFeature(unittest.TestCase):
+class TestSecondRawMomentHorizontalFeature(unittest.TestCase):
     """
     Klasa testująca klase FirstRawMomentHorizontalFeature
     """
     def setUp(self):
-        self.feature = FirstRawMomentHorizontalFeature()
+        self.feature = SecondCentralMomentHorizontalFeature()
 
     def count_feature(self, bitmap: BitmapGrayscale) -> float:
         """
@@ -34,7 +34,7 @@ class TestFirstRawMomentHorizontalFeature(unittest.TestCase):
         Oczekujemy zgłoszenia wyjątku StatisticsError.
         :return:
         """
-        with self.assertRaises(StatisticsError):
+        with self.assertRaises(RuntimeError):
             self.feature.calculate()
 
     def test_plain_black(self):

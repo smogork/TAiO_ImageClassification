@@ -6,6 +6,8 @@ przekazanego obrazu
 """
 
 import abc
+import numpy as np
+from numpy import ndarray
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
 
@@ -36,3 +38,10 @@ class Feature(metaclass=abc.ABCMeta):
 
         :param bitmap: Bitmapa, z której nastapi wyznaczenie właściwości w metodzie calculate
         """
+
+    def _map_bitmap_to_single_dimention(self, bitmap: BitmapGrayscale) -> ndarray:
+        tab = np.zeros(bitmap.get_height() * bitmap.get_width())
+        for i in range(bitmap.get_width()):
+            for j in range(bitmap.get_height()):
+                tab[i * bitmap.get_width() + j] = bitmap.get_cell_value(i, j)
+        return tab

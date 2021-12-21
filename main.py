@@ -4,6 +4,7 @@
 Początkowy moduł
 """
 import argparse
+import time
 from itertools import repeat
 from multiprocessing import Pool
 
@@ -13,6 +14,8 @@ import pandas as pd
 from tensorflow import keras
 
 from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
+from data_parsers.image_learning_data import ImageLearningData
+from data_parsers.learning_data import LearningData
 from feature.simple_features.avg_size_of_hole_feature import AvgSizeOfHoleFeature
 from feature.simple_features.avg_size_of_island_feature import AvgSizeOfIslandFeature
 from feature.simple_features.first_quart_feature import FirstQuartFeature
@@ -36,7 +39,7 @@ from feature.simple_features.second_central_moment_vertical import SecondCentral
 from feature.simple_features.second_quart_feature import SecondQuartFeature
 from feature.simple_features.third_quart_feature import ThirdQuartFeature
 from feature_extractor.feature_extractor import FeatureExtractor
-from learning import Learning
+from learning import Learning, ImageLearning
 from tests.bitmap_generator import BitmapGenerator
 
 
@@ -47,38 +50,36 @@ def define_features() -> FeatureExtractor:
     """
     extractor = FeatureExtractor()
 
-    extractor.add_feature(MaxFeature())
+    extractor.add_feature(MaxFeature())#1
     extractor.add_feature(MinFeature())
     extractor.add_feature(MeanFeature())
     extractor.add_feature(MedianFeature())
-    extractor.add_feature(NonEmptyColumnsFeature(0.05))
+    extractor.add_feature(NonEmptyColumnsFeature(0.05))#5
     extractor.add_feature(NonEmptyRowsFeature(0.95))
     extractor.add_feature(ThirdQuartFeature())
     extractor.add_feature(SecondQuartFeature())
     extractor.add_feature(SecondCentralMomentVerticalFeature())
-    extractor.add_feature(SecondCentralMomentHorizontalFeature())
+    extractor.add_feature(SecondCentralMomentHorizontalFeature())#10
     extractor.add_feature(NumberOfIslandsFeature(0.05))# blisko czarnego - NIE DZIALA
     extractor.add_feature(NumberOfHolesFeature(0.95))# blisko bialego - NIE DZIALA
     extractor.add_feature(FirstRawMomentVerticalFeature())
     extractor.add_feature(FirstRawMomentHorizontalFeature())
-    extractor.add_feature(AvgSizeOfIslandFeature(0.05))# blisko czarnego
+    extractor.add_feature(AvgSizeOfIslandFeature(0.05))# blisko czarnego # 15
     extractor.add_feature(AvgSizeOfHoleFeature(0.95))# blisko bialego
     extractor.add_feature(FourthQuartFeature())
     extractor.add_feature(LongestNonEmptyRowFeature(0.05))# blisko czarnego
     extractor.add_feature(LongestNonEmptyDiagonalFeature(0.05))# blisko czarnego
-    extractor.add_feature(LongestNonEmptyColumnFeature(0.05))# blisko czarnego
+    extractor.add_feature(LongestNonEmptyColumnFeature(0.05))# blisko czarnego # 20
     extractor.add_feature(LongestNonEmptyAntidiagonalFeature(0.05))# blisko czarnego
-    extractor.add_feature(FirstQuartFeature())
+    extractor.add_feature(FirstQuartFeature())# 22
 
     return extractor
-
 
 def main():
     """
     Docelowa funkcja main
     :return:
     """
-
 
 def test_main():
     """
@@ -101,44 +102,21 @@ def test_main():
     # Wypisz wyniki
     print(data)
 
-def map_classes(shit: str):
-    # Przykladowe dane
-    if shit == 'raised_crosswalk':
-        return [1, 0, 0, 0]
-    elif shit == 'raised_markers':
-        return [0, 1, 0, 0]
-    elif shit == 'speed_bump':
-        return [0, 0, 1, 0]
-    elif shit == 'vertical_patch':
-        return [0, 0, 0, 1]
-    else:
-        raise RuntimeError('Shit')
 
-def count_features(result, row, extractor, i):
-    bitmap_mapper = MinMaxDifferenceCoordinatesBitmapMapper()
-    bitmap_mapper.set_bitmap_size(30)
-    bitmap = bitmap_mapper.convert_series(row[1].values.tolist())
-    result[i] = extractor.calculate_features(bitmap)
-    print(f"Set {i + 1} converted")
 
-def test_classify(training_path: str):
-    data = arff.loadarff(training_path)
-    df = pd.DataFrame(data[0])
-
-    #data_size = 16# TODO: do wyrzucenia pozniej!
-    classes = df.iloc[:, -1:]
-    classes = np.array([map_classes(s[0].decode()) for s in classes.values])
-
+def test_classify(training_path: str, test_path: str):
     extractor = define_features()
-    feature_list = np.empty((len(classes), extractor.feature_count()))
-
-    with Pool(processes=16) as pool:
-        pool.starmap(count_features, zip(repeat(feature_list), df.iloc[:, :-1].iterrows(), repeat(extractor), range(len(classes))))
-
-    print (feature_list, classes)
+    data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.learn(feature_list, classes, 64, 4)
+    model.plot_history(model.learn(data, 1024, 32))
+
+
+def test_classify_images(training_path: str, test_path: str):
+    data = ImageLearningData(training_path, test_path, MinMaxDifferenceCoordinatesBitmapMapper())
+
+    model = ImageLearning(30, 4)  # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
+    model.plot_history(model.learn(data, 128, 32))
 
 if __name__ == "__main__":
     # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji
@@ -147,5 +125,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')
     parser.add_argument("train_path", help="path to training dataset")
+    parser.add_argument("test_path", help="path to testing dataset")
     args = parser.parse_args()
-    test_classify(args.train_path)
+    test_classify(args.train_path, args.test_path)
+    #test_classify_images(args.train_path, args.test_path)

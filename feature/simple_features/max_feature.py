@@ -3,6 +3,8 @@
 """
 Moduł zawiera klasę wyliczajcą numer  komórki, która nie jest biała
 """
+import numpy as np
+
 from bitmap.bitmap_grayscale import BitmapGrayscale
 from feature.feature import Feature
 
@@ -14,10 +16,10 @@ class MaxFeature(Feature):
     """
 
     def __init__(self):
-        self.__tab = []
+        self.__tab = None
 
     def calculate(self) -> float:
-        if len(self.__tab) == 0:
+        if self.__tab is None:
             raise RuntimeError("Run prepare() before calculate()")
 
         maximum = -1
@@ -29,6 +31,4 @@ class MaxFeature(Feature):
         return maximum
 
     def prepare(self, bitmap: BitmapGrayscale) -> None:
-        for i in range(bitmap.get_width()):
-            for j in range(bitmap.get_height()):
-                self.__tab.append(bitmap.get_cell_value(i, j))
+        self.__tab = super()._map_bitmap_to_single_dimention(bitmap)

@@ -58,6 +58,7 @@ class LongestNonEmptyAntidiagonalFeature(feature.Feature):
         return True
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
+        self.__starting_points = []
         self.__bitmap = copy.deepcopy(bitmap)
         for i in range(self.__bitmap.get_height()):
             self.__starting_points.append((self.__bitmap.get_width() - 1, i))

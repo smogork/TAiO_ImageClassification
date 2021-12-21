@@ -7,25 +7,28 @@ Moduł zawiera klasę wyliczajcą pierwszy moment projekcji poziomej
 import copy
 import statistics
 
-from feature import feature
-from bitmap import bitmap_grayscale
+import numpy as np
+
+from feature.feature import Feature
+from bitmap.bitmap_grayscale import BitmapGrayscale
 
 
-class FirstRawMomentHorizontalFeature(feature.Feature):
+class FirstRawMomentHorizontalFeature(Feature):
     """
     Klasa oblicza .
     Cecha 22.
     """
 
     def __init__(self):
-        self.__rowsSum = []
+        self.__rowsSum = None
 
     def calculate(self) -> float:
-        return statistics.mean(self.__rowsSum)
+        if self.__rowsSum is None:
+            raise RuntimeError("Run prepare() before calculate()")
 
-    def prepare(self, bitmap: bitmap_grayscale) -> None:
+        return self.__rowsSum.mean()
+
+    def prepare(self, bitmap: BitmapGrayscale) -> None:
+        self.__rowsSum = np.zeros(bitmap.get_height())
         for i in range(bitmap.get_height()):
-            rowI = []
-            for j in range(bitmap.get_width()):
-                rowI.append(bitmap.get_cell_value(i, j))
-            self.__rowsSum.append(sum(rowI))
+            self.__rowsSum[i] = bitmap.get_row(i).sum()

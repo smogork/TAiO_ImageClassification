@@ -60,7 +60,8 @@ class MinMaxDifferenceCoordinatesBitmapMapper(BitmapMapperInterface):
         for (x, y) in coordinates:
             counters.increment_cell(round(x), round(y))
 
-        return counters.convert_to_bitmap_grayscale()
+        bitmap = counters.convert_to_bitmap_grayscale()
+        return bitmap
 
     def set_bitmap_size(self, bitmap_size: int) -> None:
         """

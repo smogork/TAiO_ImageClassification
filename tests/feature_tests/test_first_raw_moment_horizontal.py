@@ -34,7 +34,7 @@ class TestFirstRawMomentHorizontalFeature(unittest.TestCase):
         Oczekujemy zgłoszenia wyjątku StatisticsError.
         :return:
         """
-        with self.assertRaises(StatisticsError):
+        with self.assertRaises(RuntimeError):
             self.feature.calculate()
 
     def test_plain_black(self):

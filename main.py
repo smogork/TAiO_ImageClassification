@@ -75,7 +75,7 @@ def classify_main(model_path: str, classify_data_path: str, output: str):
 
     with open(output, "w") as f:
         for c in classes:
-            f.write(c)
+            f.write(f"{str(c)}\n")
 
 def train_main(training_path: str, test_path: str, output_path: str):
     extractor = define_features()

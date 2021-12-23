@@ -14,7 +14,7 @@ Od tego momentu punktem wejściowym do programu jest `main.py`.
 
 # Parametry
 
-`main.py -h` - dokłądny opis parametrów
+`main.py -h` - dokładny opis parametrów
 
 Program działa w dwóch trybach: *training* oraz *classify*.
 
@@ -25,5 +25,6 @@ Wyjściem tego trybu jest struktura nauczonego modelu (domyslnie plik wyjściowy
 
 ## Classify
 W trybie *classify* korzystamy z wcześniej wyznaczonego modelu oraz wyznaczmy klasy podanych danych na wejściu (także w formacie ARFF).
-Program sformatuje je w postaci: [c1, c2, ..., cn], gdzie ci jest wartością z zakresu [0,1] oceniającą jak bardzo dane pasują do klasy i.
-Domyślnie program wypisuje je do pliku `output.txt` oraz na konsolę.
+Wyjściem programu jest wiele wierszy postaci: [c1, c2, ..., cn], gdzie ci jest wartością z zakresu [0,1] oceniającą jak bardzo dane pasują do klasy i.
+Każdy wiersz odpowiada klasyfikacji jednego zestawu wejściowego.
+Domyślnie program wypisuje je do pliku `output.txt` oraz na standardowe wyjście.

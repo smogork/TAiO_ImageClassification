@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 """
 Moduł zawiera klasę wyliczajcą najdłuższą niepustą diagonale na obrazku w skali szarości

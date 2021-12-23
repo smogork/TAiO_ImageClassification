@@ -1,20 +1,12 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 """
 Początkowy moduł
 """
 import argparse
-import time
-from itertools import repeat
-from multiprocessing import Pool
-
-import numpy as np
-from scipy.io import arff
-import pandas as pd
-from tensorflow import keras
 
 from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
-from data_parsers.image_learning_data import ImageLearningData
+from data_parsers.classify_data import ClassifyData
 from data_parsers.learning_data import LearningData
 from feature.simple_features.avg_size_of_hole_feature import AvgSizeOfHoleFeature
 from feature.simple_features.avg_size_of_island_feature import AvgSizeOfIslandFeature
@@ -39,8 +31,7 @@ from feature.simple_features.second_central_moment_vertical import SecondCentral
 from feature.simple_features.second_quart_feature import SecondQuartFeature
 from feature.simple_features.third_quart_feature import ThirdQuartFeature
 from feature_extractor.feature_extractor import FeatureExtractor
-from learning import Learning, ImageLearning
-from tests.bitmap_generator import BitmapGenerator
+from learning import Learning, LearningClassify
 
 
 def define_features() -> FeatureExtractor:
@@ -75,57 +66,41 @@ def define_features() -> FeatureExtractor:
 
     return extractor
 
-def main():
-    """
-    Docelowa funkcja main
-    :return:
-    """
-
-def test_main():
-    """
-    Testowa funkcja main z losowaniem obrazka
-    :return:
-    """
-    # Wylosuj jakąkolwiek bitmpae o wymiarach 30x30
-    size = 30
-    seed = 1234
-    bitmap = BitmapGenerator.random(size, size, seed)
-    bitmap.to_png("test_main.png")
-
-    # Zdefiniuj feature do eksperymentów
+def classify_main(model_path: str, classify_data_path: str, output: str):
     extractor = define_features()
+    data = ClassifyData(classify_data_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
-    # Wyznacz wszystkie feature'y
-    # np.array(extractor.calculate_features_mp(bitmap, 4))
-    data = np.array(extractor.calculate_features(bitmap))
+    model = LearningClassify(model_path)
+    classes = model.classify(data)
 
-    # Wypisz wyniki
-    print(data)
+    with open(output, "w") as f:
+        for c in classes:
+            f.write(c)
 
-
-
-def test_classify(training_path: str, test_path: str):
+def train_main(training_path: str, test_path: str, output_path: str):
     extractor = define_features()
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
     model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.plot_history(model.learn(data, 1024, 32))
-
-
-def test_classify_images(training_path: str, test_path: str):
-    data = ImageLearningData(training_path, test_path, MinMaxDifferenceCoordinatesBitmapMapper())
-
-    model = ImageLearning(30, 4)  # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.plot_history(model.learn(data, 128, 32))
+    model.plot_history(model.learn(data, 1024, 8))
+    model.save_model(output_path)
 
 if __name__ == "__main__":
-    # Chcemy aby program dzialal w dwoch trybach: nauki i klasyfikacji
-    # W trybie nauki potrzebujemy sciezki do danych treningowych oraz informacji ile ostatnich ciagow ma byc traktowanych jako walidacja
-    # W trybie klasyfikacji chcemy podac sciezke do danych, ktore bedziemy klasyfikowac i dla kazdego ciagu dostac klase
-
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')
-    parser.add_argument("train_path", help="path to training dataset")
-    parser.add_argument("test_path", help="path to testing dataset")
+    subparser = parser.add_subparsers(dest='mode')
+    parser_training = subparser.add_parser('training', help="Training mode")
+    parser_training.add_argument("train_path", help="path to training dataset")
+    parser_training.add_argument("test_path", help="path to testing dataset")
+    parser_training.add_argument("-o", "--output", help="Output path for model from learning process",
+                                 default="model.keras")
+    parser_classify = subparser.add_parser('classify', help="Classification mode")
+    parser_classify.add_argument("model_path", help="path to model file")
+    parser_classify.add_argument("classification_path", help="path to objects to classify")
+    parser_classify.add_argument("-o", "--output", help="Output path for classification result",
+                                 default="output.txt")
     args = parser.parse_args()
-    test_classify(args.train_path, args.test_path)
-    #test_classify_images(args.train_path, args.test_path)
+
+    if args.mode == "classify":
+        classify_main(args.model_path, args.classification_path, args.output)
+    elif args.mode == "training":
+        train_main(args.train_path, args.test_path, args.output)

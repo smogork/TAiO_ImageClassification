@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 """
 W module istnieje klasa reprezentująca bitmapę w skali szarości

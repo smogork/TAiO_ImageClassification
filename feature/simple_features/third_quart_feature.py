@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 """
 Moduł zawiera klasę wyliczajcą liczbę punktów o wartościach (2/4, 3/4]

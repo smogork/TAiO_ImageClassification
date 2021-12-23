@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 """
 Moduł zawiera klasę wyliczajcą drugi moment centralny projekcji poziomej

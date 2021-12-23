@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 """
 Początkowy moduł
@@ -66,12 +66,16 @@ def define_features() -> FeatureExtractor:
 
     return extractor
 
-def classify_main(model_path: str, classify_data_path: str):
+def classify_main(model_path: str, classify_data_path: str, output: str):
     extractor = define_features()
     data = ClassifyData(classify_data_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
     model = LearningClassify(model_path)
-    model.classify(data)
+    classes = model.classify(data)
+
+    with open(output, "w") as f:
+        for c in classes:
+            f.write(c)
 
 def train_main(training_path: str, test_path: str, output_path: str):
     extractor = define_features()
@@ -84,16 +88,19 @@ def train_main(training_path: str, test_path: str, output_path: str):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')
     subparser = parser.add_subparsers(dest='mode')
-    parser_training = subparser.add_parser('training')
+    parser_training = subparser.add_parser('training', help="Training mode")
     parser_training.add_argument("train_path", help="path to training dataset")
     parser_training.add_argument("test_path", help="path to testing dataset")
-    parser_training.add_argument("-o", "--output", help="Output path for model from learning process", default="model.keras")
-    parser_classify = subparser.add_parser('classify')
+    parser_training.add_argument("-o", "--output", help="Output path for model from learning process",
+                                 default="model.keras")
+    parser_classify = subparser.add_parser('classify', help="Classification mode")
     parser_classify.add_argument("model_path", help="path to model file")
     parser_classify.add_argument("classification_path", help="path to objects to classify")
+    parser_classify.add_argument("-o", "--output", help="Output path for classification result",
+                                 default="output.txt")
     args = parser.parse_args()
 
     if args.mode == "classify":
-        classify_main(args.model_path, args.classification_path)
+        classify_main(args.model_path, args.classification_path, args.output)
     elif args.mode == "training":
         train_main(args.train_path, args.test_path, args.output)

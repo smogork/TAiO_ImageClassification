@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 """
 Moduł zaiwera abstrakcyjną klasę reprezentująca funkcje wylczjącą właściwość

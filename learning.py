@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 """
 Modul zawiera klase do nauki sieci kerasem
@@ -56,3 +56,4 @@ class LearningClassify:
         classes = self.__model.predict(data)
         for c in classes:
             print(c)
+        return classes

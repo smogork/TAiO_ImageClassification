@@ -97,9 +97,19 @@ def train_main(training_path: str, test_path: str, output_path: str):
 
 def CalculateFeaturesToIgnore(data):
     featuresMatrix = data.get_training_data()[0]
-    oldcorr = numpy.corrcoef(featuresMatrix.T).T
-    rowMask = numpy.all(numpy.isnan(oldcorr), axis=1)
-    featuresMatrix = numpy.delete(featuresMatrix, numpy.where(rowMask), 1)
+    corr = numpy.corrcoef(featuresMatrix.T).T
+    rowMask = numpy.all(numpy.isnan(corr), axis=1)
+    for index in range(numpy.shape(corr)[0]):
+        if rowMask[index] == True:
+            pass
+        else:
+            for oIndex in range(numpy.shape(corr)[0]):
+                if oIndex <= index:
+                    pass
+                else:
+                    if numpy.abs(corr[index, oIndex]) > 0.9:
+                        rowMask[oIndex] = True
+    print(rowMask)
     return rowMask
 
 

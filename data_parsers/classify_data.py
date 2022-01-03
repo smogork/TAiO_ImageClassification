@@ -24,6 +24,6 @@ class ClassifyData(CommonData):
         return self.__classify_features
 
     def LoadDeletedColumns(self):
-        with open('filename.pickle', 'rb') as handle:
+        with open(self.__rowMaskFileName, 'rb') as handle:
             rows = pickle.load(handle)
             self.__classify_features = numpy.delete(self.__classify_features, rows, 1)

@@ -20,10 +20,10 @@ class ClassifyData(CommonData):
     def get_classify_data(self):
         if self.__classify_features is None:
             print ("Calculating classify data")
-            self.__train_features = self._extract_features_from_path_without_classes(self.__classify_path)
-        return self.__train_features
+            self.__classify_features = self._extract_features_from_path_without_classes(self.__classify_path)
+        return self.__classify_features
 
     def LoadDeletedColumns(self):
-        with open('filename.pickle', 'rb') as handle:
+        with open(self.__rowMaskFileName, 'rb') as handle:
             rows = pickle.load(handle)
             self.__classify_features = numpy.delete(self.__classify_features, rows, 1)

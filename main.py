@@ -71,6 +71,7 @@ def define_features() -> FeatureExtractor:
 def classify_main(model_path: str, classify_data_path: str, output: str):
     extractor = define_features()
     data = ClassifyData(classify_data_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
+    data.get_classify_data()
     data.LoadDeletedColumns()
 
     model = LearningClassify(model_path)

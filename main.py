@@ -5,6 +5,8 @@ Początkowy moduł
 """
 import argparse
 
+import numpy
+
 from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
 from data_parsers.classify_data import ClassifyData
 from data_parsers.learning_data import LearningData
@@ -69,6 +71,7 @@ def define_features() -> FeatureExtractor:
 def classify_main(model_path: str, classify_data_path: str, output: str):
     extractor = define_features()
     data = ClassifyData(classify_data_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
+    data.LoadDeletedColumns()
 
     model = LearningClassify(model_path)
     classes = model.classify(data)
@@ -81,9 +84,24 @@ def train_main(training_path: str, test_path: str, output_path: str):
     extractor = define_features()
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
-    model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
+    #wymuszenie załadowania danych
+    data.get_testing_data()
+
+    rowMask = CalculateFeaturesToIgnore(data)
+    data.SetDeletedColumns(rowMask)
+
+    model = Learning(extractor.feature_count() - len(numpy.where(rowMask)[0]), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
     model.plot_history(model.learn(data, 1024, 8))
     model.save_model(output_path)
+
+
+def CalculateFeaturesToIgnore(data):
+    featuresMatrix = data.get_training_data()[0]
+    oldcorr = numpy.corrcoef(featuresMatrix.T).T
+    rowMask = numpy.all(numpy.isnan(oldcorr), axis=1)
+    featuresMatrix = numpy.delete(featuresMatrix, numpy.where(rowMask), 1)
+    return rowMask
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')

@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import time
+
+import numpy
 import pandas
 import numpy as np
 import pandas as pd
@@ -9,6 +11,8 @@ from scipy.io import arff
 from bitmap_mapper.bitmap_mapper_interface import BitmapMapperInterface
 from data_parsers.common_data import CommonData
 from feature_extractor.feature_extractor import FeatureExtractor
+
+import pickle
 
 
 class LearningData(CommonData):
@@ -22,6 +26,7 @@ class LearningData(CommonData):
         self.__train_path = test_path
         self.__test_features = None
         self.__test_classes = None
+        self.__rowMaskFileName = "rowMask"
 
     def get_training_data(self):
         if self.__train_features is None or self.__train_classes is None:
@@ -34,3 +39,14 @@ class LearningData(CommonData):
             print("Calculating testing data")
             self.__test_features, self.__test_classes = self._extract_features_from_path(self.__test_path)
         return self.__test_features, self.__test_classes
+
+    def SetDeletedColumns(self, rowMask: numpy.array):
+        self.__train_features = numpy.delete(self.__train_features, numpy.where(rowMask), 1)
+        self.__test_features = numpy.delete(self.__test_features, numpy.where(rowMask), 1)
+
+        with open(self.__rowMaskFileName, 'wb') as handle:
+            pickle.dump(numpy.where(rowMask), handle, protocol=0)
+
+        # rows = numpy.where(~rowMask)
+        # self.__train_features = self.__train_features[rows]
+        # self.__test_features = self.__test_features[rows]

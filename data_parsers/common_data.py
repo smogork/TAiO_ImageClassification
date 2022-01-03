@@ -14,17 +14,16 @@ class CommonData:
         self.__mapper = bitmap_mapper
         self._class_names = None
 
-    def classes_str_to_array(self, class_str: str):
+    def classes_str_to_array(self, class_str: str) -> np.ndarray:
         index = np.where(self._class_names == class_str)
-        res = np.zeros(self.get_class_count())
+        res = np.zeros(self.get_class_count(), dtype=np.int64)
         res[index] = 1
 
         if sum(res) == 0:
             raise RuntimeError('Unknown class')
-        #return np.asarray(res).astype('int64')
         return res
 
-    def classes_array_to_str(self, class_arr):
+    def classes_array_to_str(self, class_arr: np.ndarray) -> str:
         if len(class_arr) != len(self._class_names):
             raise RuntimeError('Unknown class')
 
@@ -42,7 +41,9 @@ class CommonData:
         classes = np.array([s[0].decode() for s in df.iloc[:, -1:].values])
         self._class_names = np.unique(classes)
         self._class_names.sort()
-        vectorized_convertion = np.vectorize(lambda s: self.classes_str_to_array(s), otypes=[list])
+        mapped_classes = np.empty((len(classes), self.get_class_count()))
+        for i in range(len(classes)):
+            mapped_classes[i] = self.classes_str_to_array(classes[i])
 
         feature_list = np.empty((len(classes), self.__extractor.feature_count()))
         self.__mapper.set_bitmap_size(30)
@@ -55,8 +56,7 @@ class CommonData:
             print(f"Set {i + 1} converted at {(end - start) / 1e6} ms")
             i += 1
 
-        classes = vectorized_convertion(classes)
-        return feature_list, np.asarray(classes).astype('float32')
+        return feature_list, mapped_classes
 
     def _extract_features_from_path_without_classes(self, path: str):
         data = arff.loadarff(path)
@@ -83,9 +83,10 @@ class CommonData:
         classes = np.array([s[0].decode() for s in df.iloc[:, -1:].values])
         self._class_names = np.unique(classes)
         self._class_names.sort()
-        vectorized_convertion = np.vectorize(lambda s: self.classes_str_to_array(s), otypes=[list])
-        dat = vectorized_convertion(classes)
-        np.asarray(data).astype('float32')
+        mapped_classes = np.array((len(classes), self.get_class_count()))
+        for i in range(len(classes)):
+            mapped_classes[i] = self.classes_str_to_array(classes[i])
+        return mapped_classes
 
     def get_class_count(self):
         if self._class_names is None:

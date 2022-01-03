@@ -41,6 +41,9 @@ class LearningData(CommonData):
         return self.__test_features, self.__test_classes
 
     def SetDeletedColumns(self, rowMask: numpy.array):
+        self.get_testing_data()
+        self.get_training_data()
+
         self.__train_features = numpy.delete(self.__train_features, numpy.where(rowMask), 1)
         self.__test_features = numpy.delete(self.__test_features, numpy.where(rowMask), 1)
 

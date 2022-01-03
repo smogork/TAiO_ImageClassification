@@ -84,9 +84,6 @@ def train_main(training_path: str, test_path: str, output_path: str):
     extractor = define_features()
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
-    #wymuszenie załadowania danych
-    data.get_testing_data()
-
     rowMask = CalculateFeaturesToIgnore(data)
     data.SetDeletedColumns(rowMask)
 

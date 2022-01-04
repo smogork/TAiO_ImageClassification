@@ -108,6 +108,7 @@ def CalculateFeaturesToIgnore(data):
                 else:
                     if numpy.abs(corr[index, oIndex]) > 0.9:
                         rowMask[oIndex] = True
+    data.SetActiveFeatures(rowMask)
     return rowMask
 
 

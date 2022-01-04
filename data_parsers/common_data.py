@@ -92,3 +92,9 @@ class CommonData:
         if self._class_names is None:
             return None
         return len(self._class_names)
+
+    def SetActiveFeatures(self, mask):
+        self.__extractor.SetActiveFeatures(mask)
+
+    def GetActiveFeaturesNames(self):
+        return self.__extractor.GetActiveFeaturesNames()

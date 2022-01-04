@@ -15,8 +15,6 @@ from keras.wrappers.scikit_learn import KerasClassifier, KerasRegressor
 import eli5
 from eli5.sklearn import PermutationImportance
 
-import shap
-
 
 class Learning:
 
@@ -38,7 +36,7 @@ class Learning:
         test_features, test_classes = data.get_testing_data()
         ret = self.__model.fit(features, classes, epochs=epochs, batch_size=batch_size,
                                validation_data=(test_features, test_classes))
-        self.RankFeatures(features, classes, epochs, batch_size)
+        self.RankFeatures(features, classes, epochs, batch_size, data.GetActiveFeaturesNames())
         return ret
 
     def plot_history(self, history):
@@ -54,13 +52,20 @@ class Learning:
     def save_model(self, path: str):
         if self.__model is not None:
             self.__model.save(path)
+            with open(path+".weights", mode="w", encoding="utf-8") as handle:
+                handle.write(self.__weightImportance)
+                handle.write(f"\n\n\nFeatures dictionary (code: name):\n")
+                i=0
+                for name in self.__featuresNames:
+                    handle.write(f"x{i}: {name}\n")
+                    i+=1
 
-    def RankFeatures(self, x, y, epochs, batch_size):
+    def RankFeatures(self, x, y, epochs, batch_size, featuresNames):
         my_model = KerasRegressor(build_fn=lambda: self.__model, epochs=epochs, batch_size=batch_size)
         my_model.fit(x, y, epochs=epochs, batch_size=batch_size)
-
         perm = PermutationImportance(my_model, random_state=1).fit(x, y, epochs=epochs, batch_size=batch_size)
-        print(eli5.format_as_text(eli5.explain_weights(perm)))
+        self.__weightImportance = eli5.format_as_text(eli5.explain_weights(perm))
+        self.__featuresNames = featuresNames
 
 
 class LearningClassify:

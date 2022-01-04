@@ -48,7 +48,3 @@ class LearningData(CommonData):
 
         with open(output_path + ".feature", 'wb') as handle:
             pickle.dump(numpy.where(rowMask), handle, protocol=0)
-
-        # rows = numpy.where(~rowMask)
-        # self.__train_features = self.__train_features[rows]
-        # self.__test_features = self.__test_features[rows]

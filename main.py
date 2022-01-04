@@ -85,13 +85,10 @@ def train_main(training_path: str, test_path: str, output_path: str):
     extractor = define_features()
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
-    #wymuszenie załadowania danych
-    data.get_testing_data()
-
     rowMask = CalculateFeaturesToIgnore(data)
     data.SetDeletedColumns(rowMask)
 
-    model = Learning(extractor.feature_count() - len(numpy.where(rowMask)[0]), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
+    model = Learning(extractor.feature_count() - len(numpy.where(rowMask)[0]), data.get_class_count()) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
     model.plot_history(model.learn(data, 1024, 8))
     model.save_model(output_path)
 

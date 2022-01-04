@@ -6,11 +6,15 @@ Moduł zawiera klasę definiującą zbiór właściwości.
 
 import typing
 from multiprocessing import Pool
+
+import numpy
 import numpy as np
 from itertools import repeat
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
 from feature.feature import Feature
+
+import pickle
 
 
 class FeatureExtractor:
@@ -20,6 +24,7 @@ class FeatureExtractor:
 
     def __init__(self):
         self.__features = []
+        self.__ignoredFeaturesFileName = "ignored_features"
 
     def feature_count(self) -> int:
         """
@@ -68,3 +73,19 @@ class FeatureExtractor:
             result = pool.starmap(self.process_function,  zip(self.__features, repeat(bitmap)))
 
         return result
+
+    def SetIgnoredFeatures(self, rows: numpy.ndarray):
+        with open(self.__ignoredFeaturesFileName, 'wb') as handle:
+            pickle.dump(rows, handle, protocol=0)
+        self.IgnoreFeatures(rows)
+
+    def LoadIgnoredFeatures(self):
+        with open('filename.pickle', 'rb') as handle:
+            rows = pickle.load(handle)
+            self.IgnoreFeatures(rows)
+
+    def IgnoreFeatures(self, rows):
+        reversed = np.flip(rows, axis=1).tolist()[0]
+        for index in reversed:
+            print(index)
+            del self.__features[index]

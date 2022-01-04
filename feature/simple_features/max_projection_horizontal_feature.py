@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 """
-Moduł zawiera klasę wyliczającą numer wiersza, którego projekcja ma najmniejszą wartość.
+Moduł zawiera klasę wyliczającą numer wiersza, którego projekcja ma największą wartość.
 """
 import copy
 import statistics
@@ -10,12 +10,11 @@ import numpy as np
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
 from feature import feature
-from bitmap import bitmap_grayscale
 
 
 class MaxProjectionHorizontalFeature(feature.Feature):
     """
-    Klasa oblicza numer wiersza, którego projekcja ma najmniejszą wartość.
+    Klasa oblicza numer wiersza, którego projekcja ma największą wartość.
     Cecha .
     """
 
@@ -25,13 +24,9 @@ class MaxProjectionHorizontalFeature(feature.Feature):
     def calculate(self) -> float:
         if self.__rowsSum is None:
             raise RuntimeError("Run prepare() before calculate()")
-        max=0
-        for i in range(bitmap.get_height()):
-            if self.__rowsSum[i] > self.__rowsSum[max]:
-                self.__rowsSum[max] = self.__rowsSum[i]
-        return max
+        return self.__rowsSum.argmax()
 
-    def prepare(self, bitmap: bitmap_grayscale) -> None:
+    def prepare(self, bitmap: BitmapGrayscale) -> None:
         self.__rowsSum = np.zeros(bitmap.get_height())
         for i in range(bitmap.get_height()):
             self.__rowsSum[i] = bitmap.get_row(i).sum()

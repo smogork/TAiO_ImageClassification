@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 """
-Moduł zawiera klasę wyliczającą numer kolumny, którego projekcja ma najmniejszą wartość.
+Moduł zawiera klasę wyliczającą sumę kolumny, którego projekcja ma najmniejszą wartość.
 """
 import copy
 import statistics
@@ -15,7 +15,7 @@ from bitmap import bitmap_grayscale
 
 class MinProjectionVerticalValueFeature(feature.Feature):
     """
-    Klasa oblicza numer kolumny, którego projekcja ma najmniejszą wartość.
+    Klasa oblicza sumę kolumny, którego projekcja ma najmniejszą wartość.
     Cecha .
     """
 

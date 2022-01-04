@@ -25,11 +25,7 @@ class MinProjectionVerticalFeature(feature.Feature):
     def calculate(self) -> float:
         if self.__columnsSum is None:
             raise RuntimeError("Run prepare() before calculate()")
-        min=0
-        for i in range(bitmap.get_width()):
-            if self.__columnsSum[i] < self.__columnsSum[min]:
-                self.__columnsSum[min] = self.__columnsSum[i]
-        return min
+        return self.__columnsSum.argmin()
 
     def prepare(self, bitmap: bitmap_grayscale) -> None:
         self.__columnsSum = np.zeros(bitmap.get_width())

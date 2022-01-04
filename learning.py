@@ -11,6 +11,12 @@ from tensorflow.keras import optimizers
 from data_parsers.classify_data import ClassifyData
 from data_parsers.learning_data import LearningData
 
+from keras.wrappers.scikit_learn import KerasClassifier, KerasRegressor
+import eli5
+from eli5.sklearn import PermutationImportance
+
+import shap
+
 
 class Learning:
 
@@ -30,8 +36,10 @@ class Learning:
     def learn(self, data: LearningData, epochs: int, batch_size: int):
         features, classes = data.get_training_data()
         test_features, test_classes = data.get_testing_data()
-        return self.__model.fit(features, classes, epochs=epochs, batch_size=batch_size,
-                         validation_data=(test_features, test_classes))
+        ret = self.__model.fit(features, classes, epochs=epochs, batch_size=batch_size,
+                               validation_data=(test_features, test_classes))
+        self.RankFeatures(features, classes, epochs, batch_size)
+        return ret
 
     def plot_history(self, history):
         fig, ax = plt.subplots()
@@ -46,6 +54,14 @@ class Learning:
     def save_model(self, path: str):
         if self.__model is not None:
             self.__model.save(path)
+
+    def RankFeatures(self, x, y, epochs, batch_size):
+        my_model = KerasRegressor(build_fn=lambda: self.__model, epochs=epochs, batch_size=batch_size)
+        my_model.fit(x, y, epochs=epochs, batch_size=batch_size)
+
+        perm = PermutationImportance(my_model, random_state=1).fit(x, y, epochs=epochs, batch_size=batch_size)
+        print(eli5.format_as_text(eli5.explain_weights(perm)))
+
 
 class LearningClassify:
     def __init__(self, model_path: str):

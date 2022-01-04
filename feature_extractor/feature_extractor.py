@@ -24,6 +24,7 @@ class FeatureExtractor:
 
     def __init__(self):
         self.__features = []
+        self.__activeFeatures = []
         self.__ignoredFeaturesFileName = "ignored_features"
 
     def feature_count(self) -> int:
@@ -74,18 +75,15 @@ class FeatureExtractor:
 
         return result
 
-    def SetIgnoredFeatures(self, rows: numpy.ndarray):
-        with open(self.__ignoredFeaturesFileName, 'wb') as handle:
-            pickle.dump(rows, handle, protocol=0)
-        self.IgnoreFeatures(rows)
+    def SetActiveFeatures(self, mask):
+        i=0
+        for feature in self.__features:
+            if mask[i] == False:
+                self.__activeFeatures.append(feature)
+            i+=1
 
-    def LoadIgnoredFeatures(self):
-        with open('filename.pickle', 'rb') as handle:
-            rows = pickle.load(handle)
-            self.IgnoreFeatures(rows)
-
-    def IgnoreFeatures(self, rows):
-        reversed = np.flip(rows, axis=1).tolist()[0]
-        for index in reversed:
-            print(index)
-            del self.__features[index]
+    def GetActiveFeaturesNames(self):
+        names = []
+        for feature in self.__activeFeatures:
+            names.append(feature.GetName())
+        return names

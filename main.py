@@ -86,7 +86,7 @@ def train_main(training_path: str, test_path: str, output_path: str):
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
     rowMask = CalculateFeaturesToIgnore(data)
-    data.SetDeletedColumns(rowMask)
+    data.SetDeletedColumns(rowMask, output_path)
 
     model = Learning(extractor.feature_count() - len(numpy.where(rowMask)[0]), data.get_class_count()) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
     model.plot_history(model.learn(data, 1024, 8))
@@ -95,7 +95,8 @@ def train_main(training_path: str, test_path: str, output_path: str):
 
 def CalculateFeaturesToIgnore(data):
     featuresMatrix = data.get_training_data()[0]
-    corr = numpy.corrcoef(featuresMatrix.T).T
+    corr = numpy.corrcoef(featuresMatrix.T)
+    numpy.savetxt("correlation_array.csv", corr, fmt="%0.2e", delimiter=",")
     rowMask = numpy.all(numpy.isnan(corr), axis=1)
     for index in range(numpy.shape(corr)[0]):
         if rowMask[index] == True:
@@ -107,7 +108,7 @@ def CalculateFeaturesToIgnore(data):
                 else:
                     if numpy.abs(corr[index, oIndex]) > 0.9:
                         rowMask[oIndex] = True
-    print(rowMask)
+    data.SetActiveFeatures(rowMask)
     return rowMask
 
 

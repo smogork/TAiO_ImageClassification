@@ -73,19 +73,3 @@ class FeatureExtractor:
             result = pool.starmap(self.process_function,  zip(self.__features, repeat(bitmap)))
 
         return result
-
-    def SetIgnoredFeatures(self, rows: numpy.ndarray):
-        with open(self.__ignoredFeaturesFileName, 'wb') as handle:
-            pickle.dump(rows, handle, protocol=0)
-        self.IgnoreFeatures(rows)
-
-    def LoadIgnoredFeatures(self):
-        with open('filename.pickle', 'rb') as handle:
-            rows = pickle.load(handle)
-            self.IgnoreFeatures(rows)
-
-    def IgnoreFeatures(self, rows):
-        reversed = np.flip(rows, axis=1).tolist()[0]
-        for index in reversed:
-            print(index)
-            del self.__features[index]

@@ -39,6 +39,9 @@ class Feature(metaclass=abc.ABCMeta):
         :param bitmap: Bitmapa, z której nastapi wyznaczenie właściwości w metodzie calculate
         """
 
+    def GetName(self) -> str:
+        return type(self).__name__
+
     def _map_bitmap_to_single_dimention(self, bitmap: BitmapGrayscale) -> ndarray:
         tab = np.zeros(bitmap.get_height() * bitmap.get_width())
         for i in range(bitmap.get_width()):

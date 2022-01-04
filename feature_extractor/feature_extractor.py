@@ -6,11 +6,15 @@ Moduł zawiera klasę definiującą zbiór właściwości.
 
 import typing
 from multiprocessing import Pool
+
+import numpy
 import numpy as np
 from itertools import repeat
 
 from bitmap.bitmap_grayscale import BitmapGrayscale
 from feature.feature import Feature
+
+import pickle
 
 
 class FeatureExtractor:
@@ -20,6 +24,8 @@ class FeatureExtractor:
 
     def __init__(self):
         self.__features = []
+        self.__activeFeatures = []
+        self.__ignoredFeaturesFileName = "ignored_features"
 
     def feature_count(self) -> int:
         """
@@ -68,3 +74,16 @@ class FeatureExtractor:
             result = pool.starmap(self.process_function,  zip(self.__features, repeat(bitmap)))
 
         return result
+
+    def SetActiveFeatures(self, mask):
+        i=0
+        for feature in self.__features:
+            if mask[i] == False:
+                self.__activeFeatures.append(feature)
+            i+=1
+
+    def GetActiveFeaturesNames(self):
+        names = []
+        for feature in self.__activeFeatures:
+            names.append(feature.GetName())
+        return names

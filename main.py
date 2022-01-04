@@ -5,6 +5,8 @@ Początkowy moduł
 """
 import argparse
 
+import numpy
+
 from bitmap_mapper.min_max_difference_coordinates_bitmap_mapper import MinMaxDifferenceCoordinatesBitmapMapper
 from data_parsers.classify_data import ClassifyData
 from data_parsers.learning_data import LearningData
@@ -85,6 +87,8 @@ def define_features() -> FeatureExtractor:
 def classify_main(model_path: str, classify_data_path: str, output: str):
     extractor = define_features()
     data = ClassifyData(classify_data_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
+    data.get_classify_data()
+    data.LoadDeletedColumns()
 
     model = LearningClassify(model_path)
     classes = model.classify(data)
@@ -97,9 +101,32 @@ def train_main(training_path: str, test_path: str, output_path: str):
     extractor = define_features()
     data = LearningData(training_path, test_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
 
-    model = Learning(extractor.feature_count(), 4) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
+    rowMask = CalculateFeaturesToIgnore(data)
+    data.SetDeletedColumns(rowMask, output_path)
+
+    model = Learning(extractor.feature_count() - len(numpy.where(rowMask)[0]), data.get_class_count()) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
     model.plot_history(model.learn(data, 1024, 8))
     model.save_model(output_path)
+
+
+def CalculateFeaturesToIgnore(data):
+    featuresMatrix = data.get_training_data()[0]
+    corr = numpy.corrcoef(featuresMatrix.T)
+    numpy.savetxt("correlation_array.csv", corr, fmt="%0.2e", delimiter=",")
+    rowMask = numpy.all(numpy.isnan(corr), axis=1)
+    for index in range(numpy.shape(corr)[0]):
+        if rowMask[index] == True:
+            pass
+        else:
+            for oIndex in range(numpy.shape(corr)[0]):
+                if oIndex <= index:
+                    pass
+                else:
+                    if numpy.abs(corr[index, oIndex]) > 0.9:
+                        rowMask[oIndex] = True
+    data.SetActiveFeatures(rowMask)
+    return rowMask
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='TAIO obrazki w skali szarosci')

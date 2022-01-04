@@ -12,40 +12,38 @@ class CommonData:
     def __init__(self, feature_extractor: FeatureExtractor, bitmap_mapper: BitmapMapperInterface):
         self.__extractor = feature_extractor
         self.__mapper = bitmap_mapper
+        self._class_names = None
 
-    def classes_str_to_array(self, class_str: str):
-        # Przykladowe dane
-        #TODO: zrobic cos bardziej elastycnego
-        if class_str == 'raised_crosswalk':
-            return [1, 0, 0, 0]
-        elif class_str == 'raised_markers':
-            return [0, 1, 0, 0]
-        elif class_str == 'speed_bump':
-            return [0, 0, 1, 0]
-        elif class_str == 'vertical_patch':
-            return [0, 0, 0, 1]
-        else:
+    def classes_str_to_array(self, class_str: str) -> np.ndarray:
+        index = np.where(self._class_names == class_str)
+        res = np.zeros(self.get_class_count(), dtype=np.int64)
+        res[index] = 1
+
+        if sum(res) == 0:
+            raise RuntimeError('Unknown class')
+        return res
+
+    def classes_array_to_str(self, class_arr: np.ndarray) -> str:
+        if len(class_arr) != len(self._class_names):
             raise RuntimeError('Unknown class')
 
-    def classes_array_to_str(self, class_arr):
-        # Przykladowe dane
-        # TODO: zrobic cos bardziej elastycnego
-        if class_arr == [1, 0, 0, 0]:
-            return 'raised_crosswalk'
-        elif class_arr == [0, 1, 0, 0]:
-            return 'raised_markers'
-        elif class_arr == [0, 0, 1, 0]:
-            return 'speed_bump'
-        elif class_arr == [0, 0, 0, 1]:
-            return 'vertical_patch'
-        else:
-            raise RuntimeError('Unknown class')
+        index = np.where(class_arr == 1)
+        res = self._class_names[index]
 
-    def _extract_features_from_path(self, path: str,):
+        if len(res) == 0:
+            raise RuntimeError('Unknown class')
+        return res
+
+    def _extract_features_from_path(self, path: str):
         data = arff.loadarff(path)
         df = pd.DataFrame(data[0])
 
-        classes = df.iloc[:, -1:]
+        classes = np.array([s[0].decode() for s in df.iloc[:, -1:].values])
+        self._class_names = np.unique(classes)
+        self._class_names.sort()
+        mapped_classes = np.empty((len(classes), self.get_class_count()))
+        for i in range(len(classes)):
+            mapped_classes[i] = self.classes_str_to_array(classes[i])
 
         feature_list = np.empty((len(classes), self.__extractor.feature_count()))
         self.__mapper.set_bitmap_size(30)
@@ -58,10 +56,9 @@ class CommonData:
             print(f"Set {i + 1} converted at {(end - start) / 1e6} ms")
             i += 1
 
-        classes = np.array([self.classes_str_to_array(s[0].decode()) for s in classes.values])
-        return feature_list, classes
+        return feature_list, mapped_classes
 
-    def _extract_features_from_path_without_classes(self, path: str,):
+    def _extract_features_from_path_without_classes(self, path: str):
         data = arff.loadarff(path)
         df = pd.DataFrame(data[0])
 
@@ -79,3 +76,25 @@ class CommonData:
             i += 1
 
         return feature_list
+
+    def _extract_classes_from_path(self, path: str):
+        data = arff.loadarff(path)
+        df = pd.DataFrame(data[0])
+        classes = np.array([s[0].decode() for s in df.iloc[:, -1:].values])
+        self._class_names = np.unique(classes)
+        self._class_names.sort()
+        mapped_classes = np.array((len(classes), self.get_class_count()))
+        for i in range(len(classes)):
+            mapped_classes[i] = self.classes_str_to_array(classes[i])
+        return mapped_classes
+
+    def get_class_count(self):
+        if self._class_names is None:
+            return None
+        return len(self._class_names)
+
+    def SetActiveFeatures(self, mask):
+        self.__extractor.SetActiveFeatures(mask)
+
+    def GetActiveFeaturesNames(self):
+        return self.__extractor.GetActiveFeaturesNames()

@@ -26,7 +26,6 @@ class LearningData(CommonData):
         self.__train_path = test_path
         self.__test_features = None
         self.__test_classes = None
-        self.__rowMaskFileName = "rowMask"
 
     def get_training_data(self):
         if self.__train_features is None or self.__train_classes is None:
@@ -40,14 +39,14 @@ class LearningData(CommonData):
             self.__test_features, self.__test_classes = self._extract_features_from_path(self.__test_path)
         return self.__test_features, self.__test_classes
 
-    def SetDeletedColumns(self, rowMask: numpy.array):
+    def SetDeletedColumns(self, rowMask: numpy.array, output_path: str):
         self.get_testing_data()
         self.get_training_data()
 
         self.__train_features = numpy.delete(self.__train_features, numpy.where(rowMask), 1)
         self.__test_features = numpy.delete(self.__test_features, numpy.where(rowMask), 1)
 
-        with open(self.__rowMaskFileName, 'wb') as handle:
+        with open(output_path + ".feature", 'wb') as handle:
             pickle.dump(numpy.where(rowMask), handle, protocol=0)
 
         # rows = numpy.where(~rowMask)

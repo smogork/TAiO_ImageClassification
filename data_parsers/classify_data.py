@@ -15,7 +15,6 @@ class ClassifyData(CommonData):
 
         self.__classify_path = classify_path
         self.__classify_features = None
-        self.__rowMaskFileName = "rowMask"
 
     def get_classify_data(self):
         if self.__classify_features is None:
@@ -23,7 +22,7 @@ class ClassifyData(CommonData):
             self.__classify_features = self._extract_features_from_path_without_classes(self.__classify_path)
         return self.__classify_features
 
-    def LoadDeletedColumns(self):
-        with open(self.__rowMaskFileName, 'rb') as handle:
+    def LoadDeletedColumns(self, input_path: str):
+        with open(input_path + ".feature", 'rb') as handle:
             rows = pickle.load(handle)
             self.__classify_features = numpy.delete(self.__classify_features, rows, 1)

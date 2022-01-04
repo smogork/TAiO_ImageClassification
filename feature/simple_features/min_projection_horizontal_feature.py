@@ -13,7 +13,7 @@ from feature import feature
 from bitmap import bitmap_grayscale
 
 
-class MinProjectionVerticalFeature(feature.Feature):
+class MinProjectionHorizontalFeature(feature.Feature):
     """
     Klasa oblicza numer wiersza, którego projekcja ma najmniejszą wartość.
     Cecha .

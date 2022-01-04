@@ -19,9 +19,17 @@ from feature.simple_features.longest_non_empty_column_feature import LongestNonE
 from feature.simple_features.longest_non_empty_diagonal_feature import LongestNonEmptyDiagonalFeature
 from feature.simple_features.longest_non_empty_row_feature import LongestNonEmptyRowFeature
 from feature.simple_features.max_feature import MaxFeature
+from feature.simple_features.max_projection_horizontal_feature import MaxProjectionHorizontalFeature
+from feature.simple_features.max_projection_horizontal_value_feature import MaxProjectionHorizontalValueFeature
+from feature.simple_features.max_projection_vertical_feature import MaxProjectionVerticalFeature
+from feature.simple_features.max_projection_vertical_value_feature import MaxProjectionVerticalValueFeature
 from feature.simple_features.mean_feature import MeanFeature
 from feature.simple_features.median_feature import MedianFeature
 from feature.simple_features.min_feature import MinFeature
+from feature.simple_features.min_projection_horizontal_feature import MinProjectionHorizontalFeature
+from feature.simple_features.min_projection_horizontal_value_feature import MinProjectionHorizontalValueFeature
+from feature.simple_features.min_projection_vertical_feature import MinProjectionVerticalFeature
+from feature.simple_features.min_projection_vertical_value_feature import MinProjectionVerticalValueFeature
 from feature.simple_features.non_empty_columns_feature import NonEmptyColumnsFeature
 from feature.simple_features.non_empty_rows_feature import NonEmptyRowsFeature
 from feature.simple_features.number_of_holes_feature import NumberOfHolesFeature
@@ -63,6 +71,14 @@ def define_features() -> FeatureExtractor:
     extractor.add_feature(LongestNonEmptyColumnFeature(0.05))# blisko czarnego # 20
     extractor.add_feature(LongestNonEmptyAntidiagonalFeature(0.05))# blisko czarnego
     extractor.add_feature(FirstQuartFeature())# 22
+    extractor.add_feature(MaxProjectionHorizontalFeature())
+    extractor.add_feature(MaxProjectionHorizontalValueFeature())
+    extractor.add_feature(MaxProjectionVerticalFeature())
+    extractor.add_feature(MaxProjectionVerticalValueFeature())
+    extractor.add_feature(MinProjectionHorizontalFeature())
+    extractor.add_feature(MinProjectionHorizontalValueFeature())
+    extractor.add_feature(MinProjectionVerticalFeature())
+    extractor.add_feature(MinProjectionVerticalValueFeature())
 
     return extractor
 

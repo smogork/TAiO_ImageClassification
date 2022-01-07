@@ -15,7 +15,7 @@ from feature import feature
 class MaxProjectionHorizontalValueFeature(feature.Feature):
     """
     Klasa oblicza sume wiersza, którego projekcja ma największą wartość.
-    Cecha .
+    Cecha 26.
     """
 
     def __init__(self):

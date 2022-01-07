@@ -12,7 +12,7 @@ from bitmap import bitmap_grayscale
 class MaxValueHistogramFeature(feature.Feature):
     """
     Klasa oblicza ile było najczęściej występującego koloru.
-    Cecha .
+    Cecha 28.
     """
 
     def __init__(self):

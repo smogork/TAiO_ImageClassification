@@ -15,7 +15,7 @@ from feature import feature
 class MaxProjectionHorizontalFeature(feature.Feature):
     """
     Klasa oblicza numer wiersza, którego projekcja ma największą wartość.
-    Cecha .
+    Cecha 25.
     """
 
     def __init__(self):

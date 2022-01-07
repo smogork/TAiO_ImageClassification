@@ -16,7 +16,7 @@ from bitmap import bitmap_grayscale
 class MaxProjectionVerticalFeature(feature.Feature):
     """
     Klasa oblicza numer kolumny, którego projekcja ma największą wartość.
-    Cecha .
+    Cecha 23.
     """
 
     def __init__(self):

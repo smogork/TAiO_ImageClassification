@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 """
-Moduł zawiera klasę wyliczajcą minimalna wartość koloru obrazka w skali szarości
+Moduł zawiera klasę wyliczajcą najczęściej występujący kolor.
 """
 import numpy as np
 from bitmap.bitmap_grayscale import BitmapGrayscale

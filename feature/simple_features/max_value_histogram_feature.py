@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 """
-Moduł zawiera klasę wyliczajcą minimalna wartość koloru obrazka w skali szarości
+Moduł zawiera klasę wyliczajcą liczbę najczęściej występującego koloru
 """
 import numpy as np
 from bitmap.bitmap_grayscale import BitmapGrayscale
@@ -11,8 +11,8 @@ from bitmap import bitmap_grayscale
 
 class MaxValueHistogramFeature(feature.Feature):
     """
-    Klasa oblicza podaje najmniejszy numer komórki, która nie jest biała.
-    Cecha 3.
+    Klasa oblicza ile było najczęściej występującego koloru.
+    Cecha .
     """
 
     def __init__(self):

@@ -20,7 +20,7 @@ class TestMaxHistogramFeature(unittest.TestCase):
 
     def count_feature(self, bitmap: BitmapGrayscale) -> float:
         """
-        Prawidłowow wylicza wartośc feature
+        Prawidłowo wylicza wartośc feature
         :param bitmap: Bitmapa, dla której wyliczamy feature
         :return: Wyliczony feature
         """

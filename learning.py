@@ -40,7 +40,7 @@ class Learning:
         self.RankFeatures(features, classes, epochs, batch_size, data.GetActiveFeaturesNames())
         return ret
 
-    def plot_history(self, history):
+    def plot_history(self, history, path: str):
         fig, ax = plt.subplots()
         ax.plot(history.history['accuracy'], label='accuracy')
         ax.plot(history.history['val_accuracy'], label='val_accuracy')
@@ -48,7 +48,7 @@ class Learning:
         ax.set_ylabel('Accuracy')
         ax.set_ylim([0.2, 1])
         ax.legend(loc='lower right')
-        plt.show()
+        plt.savefig(path + '.pdf')
 
     def save_model(self, path: str):
         if self.__model is not None:

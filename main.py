@@ -21,10 +21,12 @@ from feature.simple_features.longest_non_empty_column_feature import LongestNonE
 from feature.simple_features.longest_non_empty_diagonal_feature import LongestNonEmptyDiagonalFeature
 from feature.simple_features.longest_non_empty_row_feature import LongestNonEmptyRowFeature
 from feature.simple_features.max_feature import MaxFeature
+from feature.simple_features.max_histogram_feature import MaxHistogramFeature
 from feature.simple_features.max_projection_horizontal_feature import MaxProjectionHorizontalFeature
 from feature.simple_features.max_projection_horizontal_value_feature import MaxProjectionHorizontalValueFeature
 from feature.simple_features.max_projection_vertical_feature import MaxProjectionVerticalFeature
 from feature.simple_features.max_projection_vertical_value_feature import MaxProjectionVerticalValueFeature
+from feature.simple_features.max_value_histogram_feature import MaxValueHistogramFeature
 from feature.simple_features.mean_feature import MeanFeature
 from feature.simple_features.median_feature import MedianFeature
 from feature.simple_features.min_feature import MinFeature
@@ -81,6 +83,8 @@ def define_features() -> FeatureExtractor:
     extractor.add_feature(MinProjectionHorizontalValueFeature())
     extractor.add_feature(MinProjectionVerticalFeature())
     extractor.add_feature(MinProjectionVerticalValueFeature())
+    extractor.add_feature(MaxHistogramFeature())
+    extractor.add_feature(MaxValueHistogramFeature())
 
     return extractor
 
@@ -88,7 +92,7 @@ def classify_main(model_path: str, classify_data_path: str, output: str):
     extractor = define_features()
     data = ClassifyData(classify_data_path, extractor, MinMaxDifferenceCoordinatesBitmapMapper())
     data.get_classify_data()
-    data.LoadDeletedColumns()
+    data.LoadDeletedColumns(model_path)
 
     model = LearningClassify(model_path)
     classes = model.classify(data)
@@ -105,7 +109,7 @@ def train_main(training_path: str, test_path: str, output_path: str):
     data.SetDeletedColumns(rowMask, output_path)
 
     model = Learning(extractor.feature_count() - len(numpy.where(rowMask)[0]), data.get_class_count()) # nie ma latwego sposobu na wylicznie ilosci klas. W moich danych testowych sa 4 klasy.
-    model.plot_history(model.learn(data, 1024, 8))
+    model.plot_history(model.learn(data, 1024, 8), output_path)
     model.save_model(output_path)
 
 

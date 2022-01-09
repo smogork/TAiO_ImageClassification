@@ -53,7 +53,7 @@ class TestSecondCentralMomentVerticalFeature(unittest.TestCase):
     def test_plain_white(self):
         """
         Test wylicza pierwszy moment projekcji poziomej dla białego obrazu rozmiaru 5 x 5.
-        Oczekujemy wartości 5.
+        Oczekujemy wartości 0.
         :return:
         """
         size = 5
@@ -62,12 +62,12 @@ class TestSecondCentralMomentVerticalFeature(unittest.TestCase):
 
         res = self.count_feature(bitmap)
 
-        self.assertAlmostEqual(5.0, res)
+        self.assertAlmostEqual(0.0, res)
 
     def test_plain_black_with_pixel_white(self):
         """
         Test wylicza pierwszy moment projekcji poziomej dla czarnego obrazu rozmiaru 5 x 5 z jednym białym pikselem.
-        Oczekujemy wartości 0.2.
+        Oczekujemy wartości 0.16.
         :return:
         """
         size = 5
@@ -77,12 +77,12 @@ class TestSecondCentralMomentVerticalFeature(unittest.TestCase):
 
         res = self.count_feature(bitmap)
 
-        self.assertAlmostEqual(0.2, res)
+        self.assertAlmostEqual(0.16, res)
 
     def test_plain_black_with_two_pixels_white_different_rows(self):
         """
         Test wylicza pierwszy moment projekcji poziomej dla czarnego obrazu rozmiaru 5 x 5 z dwoma białymi pikselami w różnych wierszach.
-        Oczekujemy wartości 0.2.
+        Oczekujemy wartości 0.64.
         :return:
         """
         size = 5
@@ -93,12 +93,12 @@ class TestSecondCentralMomentVerticalFeature(unittest.TestCase):
 
         res = self.count_feature(bitmap)
 
-        self.assertAlmostEqual(0.4, res)
+        self.assertAlmostEqual(0.64, res)
 
     def test_plain_black_with_two_pixels_white_same_row(self):
         """
         Test wylicza pierwszy moment projekcji poziomej dla czarnego obrazu rozmiaru 5 x 5 z dwoma białymi pikselami w tym samym wierszu.
-        Oczekujemy wartości 0.2.
+        Oczekujemy wartości 0.24.
         :return:
         """
         size = 5
@@ -109,7 +109,7 @@ class TestSecondCentralMomentVerticalFeature(unittest.TestCase):
 
         res = self.count_feature(bitmap)
 
-        self.assertAlmostEqual(0.4, res)
+        self.assertAlmostEqual(0.24, res)
 
 
 

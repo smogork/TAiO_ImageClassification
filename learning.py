@@ -6,7 +6,7 @@ Modul zawiera klase do nauki sieci kerasem
 import keras
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from tensorflow.keras import optimizers
+from tensorflow.keras import optimizers, layers
 
 from data_parsers.classify_data import ClassifyData
 from data_parsers.learning_data import LearningData
@@ -23,9 +23,10 @@ class Learning:
         # UWAGA - dla kazdych danych nalezy zmienic strukture sieci!!!
         self.__model = tf.keras.Sequential([
             #tf.keras.layers.Dense(output_size,  input_dim=input_size, activation='sigmoid'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
-            tf.keras.layers.Dense(2*input_size,  input_dim=input_size, activation='relu'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
-            tf.keras.layers.Dense(3*output_size, activation='relu'),# warstwa powinan byc wieksza niz output
-            tf.keras.layers.Dense(output_size, activation="sigmoid")# output =4 w testach
+            #tf.keras.layers.Dense(2*input_size,  input_dim=input_size, activation='relu'),# input ~= 22 - bierzemy nastepna warstwe troszke wieksza
+            #tf.keras.layers.Dense(3*output_size, activation='relu'),# warstwa powinan byc wieksza niz output
+            layers.Dense(input_size*output_size//2, input_dim=input_size, activation='relu'),
+            layers.Dense(output_size, activation="softmax")# output =4 w testach
         ])
         self.__model.summary()
         opt = optimizers.Adam(learning_rate=5e-5)
@@ -39,7 +40,7 @@ class Learning:
         self.RankFeatures(features, classes, epochs, batch_size, data.GetActiveFeaturesNames())
         return ret
 
-    def plot_history(self, history):
+    def plot_history(self, history, path: str):
         fig, ax = plt.subplots()
         ax.plot(history.history['accuracy'], label='accuracy')
         ax.plot(history.history['val_accuracy'], label='val_accuracy')
@@ -47,7 +48,7 @@ class Learning:
         ax.set_ylabel('Accuracy')
         ax.set_ylim([0.2, 1])
         ax.legend(loc='lower right')
-        plt.show()
+        plt.savefig(path + '.pdf')
 
     def save_model(self, path: str):
         if self.__model is not None:

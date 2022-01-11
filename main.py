@@ -58,7 +58,7 @@ def define_features() -> FeatureExtractor:
     extractor.add_feature(MeanFeature())
     extractor.add_feature(MedianFeature())
     extractor.add_feature(NonEmptyColumnsFeature(0.05))#5
-    extractor.add_feature(NonEmptyRowsFeature(0.95))
+    extractor.add_feature(NonEmptyRowsFeature(0.05))
     extractor.add_feature(ThirdQuartFeature())
     extractor.add_feature(SecondQuartFeature())
     extractor.add_feature(SecondCentralMomentVerticalFeature())

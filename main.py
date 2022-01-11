@@ -117,6 +117,30 @@ def CalculateFeaturesToIgnore(data):
     featuresMatrix = data.get_training_data()[0]
     corr = numpy.corrcoef(featuresMatrix.T)
     numpy.savetxt("correlation_array.csv", corr, fmt="%0.2e", delimiter=",")
+    arrayCsv = open("correlation_array.csv", "r")
+    lines = arrayCsv.readlines()
+    k=0
+    newlines = []
+    classesList = data.GetFeaturesNames()
+    classesStr = ","
+    k=0
+    for cls in classesList:
+        if k==0:
+            k+=1
+        else:
+            classesStr += ","
+        classesStr += cls
+    classesStr+="\n"
+    newlines.append(classesStr)
+    k=0
+    for line in lines:
+        newlines.append(classesList[k]+","+line)
+        k+=1
+    arrayCsv.close()
+    arrayCsv = open("correlation_array.csv", "w")
+    arrayCsv.writelines(newlines)
+    arrayCsv.close()
+
     rowMask = numpy.all(numpy.isnan(corr), axis=1)
     for index in range(numpy.shape(corr)[0]):
         if rowMask[index] == True:

@@ -87,3 +87,9 @@ class FeatureExtractor:
         for feature in self.__activeFeatures:
             names.append(feature.GetName())
         return names
+
+    def GetFeaturesNames(self):
+        names = []
+        for feature in self.__features:
+            names.append(feature.GetName())
+        return names

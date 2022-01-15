@@ -57,14 +57,14 @@ def define_features() -> FeatureExtractor:
     extractor.add_feature(MinFeature())
     extractor.add_feature(MeanFeature())
     extractor.add_feature(MedianFeature())
-    extractor.add_feature(NonEmptyColumnsFeature(0.05))#5
-    extractor.add_feature(NonEmptyRowsFeature(0.05))
+    extractor.add_feature(NonEmptyColumnsFeature(0.05))#5 - blisko czarnego
+    extractor.add_feature(NonEmptyRowsFeature(0.05))# blisko czarnego
     extractor.add_feature(ThirdQuartFeature())
     extractor.add_feature(SecondQuartFeature())
     extractor.add_feature(SecondCentralMomentVerticalFeature())
     extractor.add_feature(SecondCentralMomentHorizontalFeature())#10
-    extractor.add_feature(NumberOfIslandsFeature(0.05))# blisko czarnego - NIE DZIALA
-    extractor.add_feature(NumberOfHolesFeature(0.95))# blisko bialego - NIE DZIALA
+    extractor.add_feature(NumberOfIslandsFeature(0.05))# blisko czarnego
+    extractor.add_feature(NumberOfHolesFeature(0.95))# blisko bialego
     extractor.add_feature(FirstRawMomentVerticalFeature())
     extractor.add_feature(FirstRawMomentHorizontalFeature())
     extractor.add_feature(AvgSizeOfIslandFeature(0.05))# blisko czarnego # 15

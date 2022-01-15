@@ -57,14 +57,14 @@ def define_features() -> FeatureExtractor:
     extractor.add_feature(MinFeature())
     extractor.add_feature(MeanFeature())
     extractor.add_feature(MedianFeature())
-    extractor.add_feature(NonEmptyColumnsFeature(0.05))#5
-    extractor.add_feature(NonEmptyRowsFeature(0.95))
+    extractor.add_feature(NonEmptyColumnsFeature(0.05))#5 - blisko czarnego
+    extractor.add_feature(NonEmptyRowsFeature(0.05))# blisko czarnego
     extractor.add_feature(ThirdQuartFeature())
     extractor.add_feature(SecondQuartFeature())
     extractor.add_feature(SecondCentralMomentVerticalFeature())
     extractor.add_feature(SecondCentralMomentHorizontalFeature())#10
-    extractor.add_feature(NumberOfIslandsFeature(0.05))# blisko czarnego - NIE DZIALA
-    extractor.add_feature(NumberOfHolesFeature(0.95))# blisko bialego - NIE DZIALA
+    extractor.add_feature(NumberOfIslandsFeature(0.05))# blisko czarnego
+    extractor.add_feature(NumberOfHolesFeature(0.95))# blisko bialego
     extractor.add_feature(FirstRawMomentVerticalFeature())
     extractor.add_feature(FirstRawMomentHorizontalFeature())
     extractor.add_feature(AvgSizeOfIslandFeature(0.05))# blisko czarnego # 15
@@ -113,10 +113,34 @@ def train_main(training_path: str, test_path: str, output_path: str):
     model.save_model(output_path)
 
 
-def CalculateFeaturesToIgnore(data):
+def CalculateFeaturesToIgnore(data, output_path):
     featuresMatrix = data.get_training_data()[0]
     corr = numpy.corrcoef(featuresMatrix.T)
-    numpy.savetxt("correlation_array.csv", corr, fmt="%0.2e", delimiter=",")
+    numpy.savetxt(output_path + ".corrarr", corr, fmt="%0.2e", delimiter=",")
+    arrayCsv = open(output_path + ".corrarr", "r")
+    lines = arrayCsv.readlines()
+    k=0
+    newlines = []
+    classesList = data.GetFeaturesNames()
+    classesStr = ","
+    k=0
+    for cls in classesList:
+        if k==0:
+            k+=1
+        else:
+            classesStr += ","
+        classesStr += cls
+    classesStr+="\n"
+    newlines.append(classesStr)
+    k=0
+    for line in lines:
+        newlines.append(classesList[k]+","+line)
+        k+=1
+    arrayCsv.close()
+    arrayCsv = open(output_path + ".corrarr", "w")
+    arrayCsv.writelines(newlines)
+    arrayCsv.close()
+
     rowMask = numpy.all(numpy.isnan(corr), axis=1)
     for index in range(numpy.shape(corr)[0]):
         if rowMask[index] == True:

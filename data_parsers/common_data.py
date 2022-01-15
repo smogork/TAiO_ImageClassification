@@ -98,3 +98,6 @@ class CommonData:
 
     def GetActiveFeaturesNames(self):
         return self.__extractor.GetActiveFeaturesNames()
+
+    def GetFeaturesNames(self):
+        return self.__extractor.GetFeaturesNames()

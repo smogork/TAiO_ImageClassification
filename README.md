@@ -4,7 +4,8 @@ Klasyfikacja szeregów czasowych przy pomocy przekształcania szeregów na obraz
 
 # Uruchomienie projektu
 
-Projekt wymaga posiadania interpretera pythona w wersji 3.9
+Projekt był testowany na interpreterze pythona 3.9.
+Prawdopodobnie starsze wersje interpretera w wersji 3 przy poprawce wersji zależności w pliku `requirements.txt` także powinny prawidłowo uruchomić kod.
 
 Załóżmy, że posiadamy pobrany kod źródłowy projektu. Następnie:
 1. (Opcjonalnie - silnie zalecane) Utworzyć wirtualne środowisko pythona w folderze projektu oraz je aktywować.
@@ -35,3 +36,12 @@ Przykład wywołania:
 ```
 ./main.py classify model.keras data/AsphaltObstacles_TRAIN.arff
 ```
+
+# Format danych wyjściowych
+
+W procesie uczenia podawana jest ścieżka `output_path`, do której program wypisuje pliki:
+1. `output_path` - model nauczony na podanych danych. Potrzebne do procesu klasyfikacji.
+2. `output_path.feature` - serializowane cechy uznane za zbędne. Potrzebne aby przy klasyfikacji już nauczonego modelu brac pod uwagę tylko konieczne cechy.
+3. `output_path.weight` - plik tekstowy z listą cech wykorzystanych przy uczeniu modelu oraz ich znaczenie w klasyfikacji.
+4. `output_path.pdf` - plik pdf z wykresem przedstawiającym historię uczenia modelu. Wykres przedstawia poziom dokładności w zalezności od epoki uczenia.
+5. `output_path.corrarr` - plik csv reprezentujący macierz korelacji pomiędzy cechami wyznaczone w czasie uczenia.

@@ -11,7 +11,7 @@ from bitmap import bitmap_grayscale
 
 class MinFeature(feature.Feature):
     """
-    Klasa oblicza podaje najmniejszy numer komórki, która nie jest biała.
+    Klasa oblicza podaje
     Cecha 3.
     """
 

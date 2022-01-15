@@ -113,11 +113,11 @@ def train_main(training_path: str, test_path: str, output_path: str):
     model.save_model(output_path)
 
 
-def CalculateFeaturesToIgnore(data):
+def CalculateFeaturesToIgnore(data, output_path):
     featuresMatrix = data.get_training_data()[0]
     corr = numpy.corrcoef(featuresMatrix.T)
-    numpy.savetxt("correlation_array.csv", corr, fmt="%0.2e", delimiter=",")
-    arrayCsv = open("correlation_array.csv", "r")
+    numpy.savetxt(output_path + ".corrarr", corr, fmt="%0.2e", delimiter=",")
+    arrayCsv = open(output_path + ".corrarr", "r")
     lines = arrayCsv.readlines()
     k=0
     newlines = []
@@ -137,7 +137,7 @@ def CalculateFeaturesToIgnore(data):
         newlines.append(classesList[k]+","+line)
         k+=1
     arrayCsv.close()
-    arrayCsv = open("correlation_array.csv", "w")
+    arrayCsv = open(output_path + ".corrarr", "w")
     arrayCsv.writelines(newlines)
     arrayCsv.close()
 

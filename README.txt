@@ -8,8 +8,14 @@ TAiO_ImageClassification
 
  Załóżmy, że posiadamy pobrany kod źródłowy projektu. Następnie:
 
-   1. (Opcjonalnie - silnie zalecane) Utworzyć wirtualne środowisko pythona w folderze projektu oraz je aktywować.
-   2. Wczytać zależności projektu zapisane w pliku requirements.txt (pip install -r requiremets/path).
+   1. Utworzyć wirtualne środowisko pythona w folderze projektu oraz je
+      aktywować (python -m venv venv && source venv/bin/activate).
+   2. Wczytać zależności projektu, bez korzystania z folderu cache, zapisane w pliku requirements.txt
+     (pip install -r requiremets/path --no-cache-dir).
+
+ Na wydziałowych komputerach trzeba korzystać z linuxa do uruchomienia
+ projektu. Czasami może się zdarzyć, że folder domowy sie przepełni. Wtedy należy
+ przekopiować folder z kodem do /tmp i tam wykonać powyższe kroki.
 
  Od tego momentu punktem wejściowym do programu jest main.py.
  Parametry

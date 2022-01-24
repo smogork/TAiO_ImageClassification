@@ -35,14 +35,14 @@ Instrukcja uruchamiania:
     Tryb training:
 
         W trybie training program wykorzystuje dane testowe oraz walidacyjne żeby nauczyć sieć. Dane powinny być
-        dostarczone w postaci pliku ARFF. Wyjściem programu uruchomionego w tym trybie jest struktura nauczonego modelu
-        (domyslnie plik wyjściowy ma nazwę model.keras).
+        dostarczone w postaci pliku ARFF. Wyjściem programu uruchomionego w tym trybie jest struktura nauczonego modelu.
+        Prefix nazwy plików wyjściowych można zmienić parametrem -o (domyslnie przyjmuje wartość model.keras).
 
         Przykład wywołania:
             python main.py training data/AsphaltObstacles_TRAIN.arff data/AsphaltObstacles_TEST.arff -o output_path
 
         Format danych wyjściowych:
-            W procesie uczenia podawanjest plik wyjściowy output_path, gdzie program zapisuje pliki:
+            W procesie uczenia podawana jest nazwa pliku output_path. Program na podstawie tej nazwy utworzy pliki:
             1. output_path - model nauczony na podanych danych. Potrzebnu do procesu klasyfikacji.
             2. output_path.feature - zserializowane cechy uznane za zbędne. Potrzebne aby przy klasyfikacji za pomocą
                już nauczonego modelu, brać pod uwagę tylko istotne cechy.
@@ -61,6 +61,7 @@ Instrukcja uruchamiania:
             [c1 c2 ... cn] - ci jest liczbą z zakresu [0,1] określającą jak bardzo dane z odpowiadającego szeregu wejścia pasują do i-tej klasy.
             Każdy wiersz odpowiada klasyfikacji jednego szeregu wejściowego (j-ty wiersz - j-ty szereg wejścia).
 
-        Domyślnie program wypisuje dane wyjściowe do pliku output.txt oraz na standardowe wyjście.
+        Program wypisuje dane do podanego pliku tekstowego oraz na standardowe wyjście.
+        Nazwę pliku wyjściowego można zmienic poprzez parametr -o (domyslnie przyjmuje wartość output.txt)
         Przykład wywołania:
             python main.py classify model.keras data/AsphaltObstacles_TRAIN.arff -o output.txt

@@ -41,7 +41,19 @@ Instrukcja uruchamiania:
         Przykład wywołania:
             python main.py training data/AsphaltObstacles_TRAIN.arff data/AsphaltObstacles_TEST.arff
 
-    Tryb classify
+        Format danych wyjściowych:
+            W procesie uczenia podawana jest ścieżka output_path, do której program zapisuje pliki:
+            1. output_path - model nauczony na podanych danych. Potrzebnu do procesu klasyfikacji.
+            2. output_path.feature - zserializowane cechy uznane za zbędne. Potrzebne aby przy klasyfikacji za pomocą
+               już nauczonego modelu, brać pod uwagę tylko istotne cechy.
+            3. output_path.weight - plik tekstowy z listą cech wykorzystanych przy uczeniu modelu oraz ich znaczenie w
+               klasyfikacji.
+            4. output_path.pdf - plik pdf z wykresem przedstawiającym historię uczenia modelu. Wykres przedstawia poziom
+               dokładności w zależności od epoki uczenia.
+            5. output_path.corrarr - plik csv reprezentujący macierz korelacji pomiędzy cechami, wyznaczoną w czasie
+               uczenia.
+
+    Tryb classify:
 
         W trybie classify korzystamy z wcześniej wyuczonego modelu do wyznaczania klas danych podanych na wejściu
         (także przekazanych w formacie ARFF).
@@ -52,16 +64,3 @@ Instrukcja uruchamiania:
         Domyślnie program wypisuje dane wyjściowe do pliku output.txt oraz na standardowe wyjście.
         Przykład wywołania:
             python main.py classify model.keras data/AsphaltObstacles_TRAIN.arff
-
-    Format danych wyjściowych
-
-    W procesie uczenia podawana jest ścieżka output_path, do której program zapisuje pliki:
-    1. output_path - model nauczony na podanych danych. Potrzebnu do procesu klasyfikacji.
-    2. output_path.feature - zserializowane cechy uznane za zbędne. Potrzebne aby przy klasyfikacji za pomocą już nauczonego
-       modelu, brać pod uwagę tylko istotne cechy.
-    3. output_path.weight - plik tekstowy z listą cech wykorzystanych przy uczeniu modelu oraz ich znaczenie w
-       klasyfikacji.
-    4. output_path.pdf - plik pdf z wykresem przedstawiającym historię uczenia modelu. Wykres przedstawia poziom
-       dokładności w zależności od epoki uczenia.
-    5. output_path.corrarr - plik csv reprezentujący macierz korelacji pomiędzy cechami, wyznaczoną w czasie
-       uczenia.

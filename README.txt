@@ -12,7 +12,7 @@ Instrukcja uruchamiania:
 
     Tworzenie środowiska:
         1. Pobrać kod źródłowy projektu i go rozpakować.
-        2. (MINI) Uruchomić Anaconda Prompt będąc na Windowsie albo terminal będąc na linuxie.
+        2. (Stosuje sie do komputerów laboratoryjnych pracujących pod kontrolą Windowsa na MINI) Uruchomić Anaconda Prompt.
         3. Zmienić aktualny katalog roboczy na miejsce rozpakowania kodu. Po zmianie katalog roboczy powinien zawierać m. in. plik main.py.
         4. Utworzyć wirtualne środowisko pythona w folderze projektu oraz je
            aktywować:

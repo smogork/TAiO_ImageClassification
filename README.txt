@@ -12,11 +12,12 @@ Instrukcja uruchamiania:
 
     Tworzenie środowiska:
         1. Pobrać kod źródłowy projektu i go rozpakować.
-        2. (MINI) Uruchamić Anaconda Prompt będąc na Windowsie albo terminal będąc na linuxie w folderze z ROZPAKOWANYM KODEM.
-        3. Utworzyć wirtualne środowisko pythona w folderze projektu oraz je
+        2. (MINI) Uruchomić Anaconda Prompt będąc na Windowsie albo terminal będąc na linuxie.
+        3. Zmienić aktualny katalog roboczy na miejsce rozpakowania kodu. Po zmianie katalog roboczy powinien zawierać m. in. plik main.py.
+        4. Utworzyć wirtualne środowisko pythona w folderze projektu oraz je
            aktywować:
               python -m venv venv && .\venv\Scripts\activate.bat
-        4. Wczytać zależności projektu, zapisane w pliku requirements.txt, bez korzystania z folderu cache:
+        5. Wczytać zależności projektu, zapisane w pliku requirements.txt, bez korzystania z folderu cache:
               pip install -r requiremets/path --no-cache-dir
 
         Uwaga!

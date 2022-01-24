@@ -27,7 +27,7 @@ Instrukcja uruchamiania:
     Po stworzeniu środowiska punktem wejściowym do programu jest main.py.
 
     Parametry wywołania programu:
-    python main.py -h - dokładny opis parametrów
+        python main.py -h - dokładny opis parametrów
 
     Program działa w dwóch trybach: training oraz classify.
 

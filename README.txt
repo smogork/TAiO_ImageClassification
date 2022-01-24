@@ -39,10 +39,10 @@ Instrukcja uruchamiania:
         (domyslnie plik wyjściowy ma nazwę model.keras).
 
         Przykład wywołania:
-            python main.py training data/AsphaltObstacles_TRAIN.arff data/AsphaltObstacles_TEST.arff
+            python main.py training data/AsphaltObstacles_TRAIN.arff data/AsphaltObstacles_TEST.arff -o output_path
 
         Format danych wyjściowych:
-            W procesie uczenia podawana jest ścieżka output_path, do której program zapisuje pliki:
+            W procesie uczenia podawanjest plik wyjściowy output_path, gdzie program zapisuje pliki:
             1. output_path - model nauczony na podanych danych. Potrzebnu do procesu klasyfikacji.
             2. output_path.feature - zserializowane cechy uznane za zbędne. Potrzebne aby przy klasyfikacji za pomocą
                już nauczonego modelu, brać pod uwagę tylko istotne cechy.
@@ -63,4 +63,4 @@ Instrukcja uruchamiania:
 
         Domyślnie program wypisuje dane wyjściowe do pliku output.txt oraz na standardowe wyjście.
         Przykład wywołania:
-            python main.py classify model.keras data/AsphaltObstacles_TRAIN.arff
+            python main.py classify model.keras data/AsphaltObstacles_TRAIN.arff -o output.txt
